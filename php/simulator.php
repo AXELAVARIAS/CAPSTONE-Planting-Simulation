@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Simulation</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body {
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+        main {
+            flex: 1;
+        }
+        footer{
+            background-color: rgba(40, 167, 69, .9);
+        }
+        .iframe-container {
+        max-width: 100%;
+        height: 90vh;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        background: linear-gradient(135deg, #e0f7e9, #c3e6cb);
+        padding: 10px;
+        border-radius: 20px;
+        box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
+    }
+
+    iframe {
+        width: 100%;
+        height: 100%;
+        border: 5px solid #28a745;
+        border-radius: 15px;
+    }
+    </style>
+</head>
+<body>
+  <nav class="navbar navbar-expand-lg sticky-top px-5 bg-success text-white">
+      <div class="container-fluid">
+          <a class="navbar-brand mx-5 text-white" href="../index.php">
+                <img src="../images/clearteenalogo.png" class="teenanimlogo" alt="home logo" style="width: 50px; height: 50px;">
+                <strong class="fs-5 ms-3">TEEN-ANIM</strong>
+          </a>
+          <div class="collapse navbar-collapse" id="navbarNav">
+              <ul class="navbar-nav ms-auto">
+                  <li class="nav-item">
+                      <a class="nav-link fw-semibold text-white" href="Forum/community.php">Farming Community</a>
+                  </li>
+                  <li class="nav-item">
+                      <a class="nav-link fw-semibold text-white mx-5" href="simulator.php">Simulation</a>
+                  </li>
+                  <li class="nav-item">
+                      <a class="nav-link fw-semibold text-white me-5" href="plantinder.php">Plantinder</a>
+                  </li>
+                  <li class="nav-item">
+                      <a class="nav-link fw-semibold text-white me-5" href="modulepage.php">Module</a>
+                  </li>
+                  <li class="nav-item">
+                      <a class="nav-link fw-semibold text-white me-5" href="userpage.php">Profile</a>
+                  </li>
+              </ul>
+          </div>
+      </div>
+  </nav>
+      <main class="container text-center mt-5">
+        <div class="iframe-container">
+            <iframe src="https://farmsimumlation.netlify.app/" frameborder="0"></iframe>
+        </div>
+      </main>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

@@ -1,0 +1,57 @@
+body, .container-fluid{
+    margin: 0;
+    padding: 0;
+    overflow-x: hidden;
+    font-family: 'Poppins', sans-serif;
+    font-family: 'Irish Grover';
+
+}
+
+.nav-bg{
+    background-color: rgba(40, 167, 69, 1);
+}
+
+.hero-page{
+    background-image: url("../images/HeroPage.png");
+    background-size: cover;
+    background-position: center;
+    height: 800px;
+    display: flex;
+    flex-direction: column;
+}
+h1{
+    color: #F7C35F;
+}
+
+.grey-background{
+    background-color: rgba(245, 245, 245, 1);
+}
+
+.footer-bg{
+    background-color: rgba(40, 167, 69, .9);
+}
+
+.contact-bg{
+    background-color: rgba(40, 167, 69, .9);
+}
+.teenanimlogo{
+    height: 50px;
+    width: 50px;
+    object-fit: cover;
+    margin-left: 10px ;
+    margin-bottom: 0px;
+}
+
+.ml-5 {
+    margin-left: 250px;
+  }
+.buttonformat{
+    color: #F7C35F;
+    background-color: #2D5F4D;
+}
+.buttonformat:hover{
+    color: #F7C35F;
+    background-color: #239b56;
+}
+
+
