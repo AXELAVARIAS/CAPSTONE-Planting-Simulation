@@ -7,170 +7,464 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Teen-Anim</title>
-    <head>
-        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-        <link rel="stylesheet" href="css/homepage.css">
-    </head>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="css/homepage.css">
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+    <style>
+      /* Hero Animation */
+      .hero-bg {
+        background: linear-gradient(135deg, #4caf50 0%, #81c784 100%);
+        position: relative;
+        overflow: hidden;
+        min-height: 80vh;
+      }
+      .wave {
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        width: 100%;
+        height: 120px;
+      }
+      .typewriter {
+        display: inline-block;
+        border-right: 2px solid #fff;
+        white-space: nowrap;
+        overflow: hidden;
+        animation: typing 3s steps(30, end), blink-caret .75s step-end infinite;
+        font-size: 2.5rem;
+      }
+      @keyframes typing {
+        from { width: 0 }
+        to { width: 100% }
+      }
+      @keyframes blink-caret {
+        from, to { border-color: transparent }
+        50% { border-color: #fff; }
+      }
+      .feature-card {
+        transition: transform 0.2s, box-shadow 0.2s;
+        cursor: pointer;
+      }
+      .feature-card:hover {
+        transform: translateY(-10px) scale(1.03);
+        box-shadow: 0 8px 24px rgba(76,175,80,0.15);
+      }
+      .carousel-img {
+        max-height: 350px;
+        object-fit: cover;
+        border-radius: 1rem;
+      }
+      .counter {
+        font-size: 2.5rem;
+        font-weight: bold;
+        color: #388e3c;
+      }
+      .faq-item {
+        border-bottom: 1px solid #e0e0e0;
+        padding: 1rem 0;
+      }
+      .contact-fab {
+        position: fixed;
+        bottom: 30px;
+        right: 30px;
+        z-index: 999;
+        background: #4caf50;
+        color: #fff;
+        border-radius: 50%;
+        width: 60px;
+        height: 60px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 2rem;
+        box-shadow: 0 4px 16px rgba(76,175,80,0.2);
+        cursor: pointer;
+        transition: background 0.2s;
+      }
+      .contact-fab:hover {
+        background: #388e3c;
+      }
+      @media (max-width: 768px) {
+        .carousel-img { max-height: 200px; }
+        .typewriter { font-size: 1.5rem; }
+      }
+      .navbar-modern {
+        background: #fff !important;
+        box-shadow: 0 2px 12px rgba(60, 120, 60, 0.08);
+        border-bottom: 3px solid #4caf50;
+        padding-top: 0.5rem;
+        padding-bottom: 0.5rem;
+        z-index: 1050;
+      }
+      .navbar-modern .navbar-brand {
+        display: flex;
+        align-items: center;
+        font-weight: bold;
+        font-size: 1.5rem;
+        color: #388e3c !important;
+        letter-spacing: 1px;
+      }
+      .navbar-modern .teenanimlogo {
+        width: 48px;
+        height: 48px;
+        border-radius: 50%;
+        object-fit: cover;
+        margin-right: 12px;
+        border: 2px solid #4caf50;
+        background: #fff;
+      }
+      .navbar-modern .navbar-nav .nav-link {
+        color: #388e3c !important;
+        font-weight: 500;
+        font-size: 1.1rem;
+        margin: 0 0.5rem;
+        position: relative;
+        transition: color 0.2s;
+      }
+      .navbar-modern .navbar-nav .nav-link::after {
+        content: '';
+        display: block;
+        width: 0;
+        height: 2px;
+        background: #4caf50;
+        transition: width 0.3s;
+        position: absolute;
+        left: 0;
+        bottom: -4px;
+      }
+      .navbar-modern .navbar-nav .nav-link:hover,
+      .navbar-modern .navbar-nav .nav-link.active {
+        color: #256029 !important;
+      }
+      .navbar-modern .navbar-nav .nav-link:hover::after,
+      .navbar-modern .navbar-nav .nav-link.active::after {
+        width: 100%;
+      }
+      .navbar-modern .btn-signin, .navbar-modern .btn-profile {
+        background: #4caf50;
+        color: #fff;
+        border-radius: 50px;
+        padding: 0.5rem 1.5rem;
+        font-weight: 600;
+        border: none;
+        transition: background 0.2s, color 0.2s;
+        box-shadow: 0 2px 8px rgba(76,175,80,0.08);
+      }
+      .navbar-modern .btn-signin:hover, .navbar-modern .btn-profile:hover {
+        background: #388e3c;
+        color: #fff;
+      }
+      .navbar-toggler {
+        border: none;
+        outline: none;
+      }
+      .navbar-toggler:focus {
+        box-shadow: 0 0 0 2px #4caf50;
+      }
+      @media (max-width: 991.98px) {
+        .navbar-modern .navbar-nav .nav-link {
+          margin: 0.5rem 0;
+          font-size: 1.2rem;
+        }
+        .navbar-modern .navbar-collapse {
+          background: #fff;
+          border-radius: 0 0 1rem 1rem;
+          box-shadow: 0 8px 24px rgba(76,175,80,0.08);
+          padding: 1rem 0;
+        }
+      }
+    </style>
 </head>
 <body>
-    <section class="container-fluid hero-page "> 
+    <section class="container-fluid hero-bg d-flex align-items-center justify-content-center flex-column position-relative" style="margin-top: 80px;">
       <?php if (isset($_SESSION['logged_in']) && $_SESSION['logged_in'] === true): ?>
-          <nav class="navbar navbar-expand-lg sticky-top px-5 bg-success text-white">
+          <nav class="navbar navbar-expand-lg fixed-top navbar-modern w-100">
               <div class="container-fluid">
-                  <a class="navbar-brand mx-5 text-white" href="index.php">
+                  <a class="navbar-brand" href="index.php">
                       <img src="images/clearteenalogo.png" class="teenanimlogo" alt="home logo">
-                      <strong class="fs-5 ms-3">TEEN-ANIM</strong>
+                      TEEN-ANIM
                   </a>
+                  <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                      <span class="navbar-toggler-icon"></span>
+                  </button>
                   <div class="collapse navbar-collapse" id="navbarNav">
-                      <ul class="navbar-nav ms-auto">
+                      <ul class="navbar-nav ms-auto align-items-lg-center">
                           <li class="nav-item">
-                              <a class="nav-link fw-semibold text-white" href="php/Forum/community.php">Farming Community</a>
+                              <a class="nav-link" href="php/Forum/community.php">Farming Community</a>
                           </li>
                           <li class="nav-item">
-                              <a class="nav-link fw-semibold text-white mx-5" href="php/simulator.php">Simulation</a>
+                              <a class="nav-link" href="php/simulator.php">Simulation</a>
                           </li>
                           <li class="nav-item">
-                              <a class="nav-link fw-semibold text-white me-5" href="php/plantinder.php">Plantinder</a>
+                              <a class="nav-link" href="php/plantinder.php">Plantinder</a>
                           </li>
                           <li class="nav-item">
-                              <a class="nav-link fw-semibold text-white me-5" href="php/modulepage.php">Module</a>
+                              <a class="nav-link" href="php/modulepage.php">Module</a>
                           </li>
                           <li class="nav-item">
-                              <a class="nav-link fw-semibold text-white me-5" href="php/userpage.php">Profile</a>
+                              <a class="nav-link" href="php/userpage.php">Profile</a>
                           </li>
                       </ul>
                   </div>
               </div>
           </nav>
         <?php else: ?>
-          <nav class="navbar navbar-expand-lg sticky-top px-5 bg-success text-white">
+          <nav class="navbar navbar-expand-lg fixed-top navbar-modern w-100">
               <div class="container-fluid">
-                  <a class="navbar-brand mx-5" href="index.php">
+                  <a class="navbar-brand" href="index.php">
                       <img src="images/clearteenalogo.png" class="teenanimlogo" alt="home logo">
-                      <strong class="fs-5 ms-3">TEEN-ANIM</strong>
+                      TEEN-ANIM
                   </a>
+                  <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                      <span class="navbar-toggler-icon"></span>
+                  </button>
                   <div class="collapse navbar-collapse" id="navbarNav">
-                      <ul class="navbar-nav ms-auto me-5">
-                          <li class="nav-item mx-3">
-                              <a href="php/login.php" class="btn btn-warning">Sign In</a>
+                      <ul class="navbar-nav ms-auto align-items-lg-center">
+                          <li class="nav-item">
+                              <a href="php/login.php" class="btn btn-signin">Sign In</a>
                           </li>
                       </ul>
                   </div>
               </div>
           </nav>
         <?php endif; ?>
-        <div class="hero-page-text text-center text-white d-flex flex-column justify-content-center align-items-center"> 
-          <div>
-              <h1 class="display-1 mt-5 mb-5">Welcome to Teen-Anim</h1> 
-              <p class="lead my-4 fs-3">Empowering the next generation of farmers</p> 
-              <p class="mb-5 fs-3">Join us in exploring the exciting world of agriculture. Learn, grow, and connect with fellow young farmers. Together, we can cultivate a sustainable future.</p> 
-              <?php if (!isset($_SESSION['logged_in']) || $_SESSION['logged_in'] !== true): ?>
-                  <a href="php/signup.php" class="btn btn-success btn-lg">Get Started</a> 
-              <?php endif; ?>
-          </div>
-      </div>
+        <div class="text-center text-white d-flex flex-column justify-content-center align-items-center" style="z-index:2;">
+          <h1 class="typewriter mb-3">Welcome to Teen-Anim</h1>
+          <p class="lead my-2 fs-3" data-aos="fade-up">Empowering the next generation of farmers</p>
+          <p class="mb-4 fs-4" data-aos="fade-up" data-aos-delay="100">Join us in exploring the exciting world of agriculture. Learn, grow, and connect with fellow young farmers. Together, we can cultivate a sustainable future.</p>
+          <?php if (!isset($_SESSION['logged_in']) || $_SESSION['logged_in'] !== true): ?>
+              <a href="php/signup.php" class="btn btn-lg btn-warning px-5 py-2" data-aos="zoom-in" data-aos-delay="200">Get Started</a>
+          <?php endif; ?>
+        </div>
+        <svg class="wave" viewBox="0 0 1440 320"><path fill="#fff" fill-opacity="1" d="M0,224L48,197.3C96,171,192,117,288,117.3C384,117,480,171,576,197.3C672,224,768,224,864,197.3C960,171,1056,117,1152,128C1248,139,1344,213,1392,250.7L1440,288L1440,320L1392,320C1344,320,1248,320,1152,320C1056,320,960,320,864,320C768,320,672,320,576,320C480,320,384,320,288,320C192,320,96,320,48,320L0,320Z"></path></svg>
     </section>
-    <section>
-      <div class="container-fluid text-center">
-        <div class="row">
-          <div class="col px-5 grey-background">
-            <div class="my-4">
-              <h2>Seamless Start</h2>
-              <p>Farming Made Easy. Get started with our simple online resources, tools, and community support to kickstart your journey in agriculture.</p>
-            </div>
+    <section class="container py-5">
+      <div class="row g-4">
+        <div class="col-md-4" data-aos="fade-up">
+          <div class="card feature-card h-100 text-center p-4">
+            <div class="mb-3"><i class="bi bi-rocket-takeoff fs-1 text-success"></i></div>
+            <h3>Seamless Start</h3>
+            <p>Farming Made Easy. Get started with our simple online resources, tools, and community support to kickstart your journey in agriculture.</p>
+            <button class="btn btn-outline-success mt-2" onclick="scrollToSection('module-carousel')">Learn More</button>
           </div>
-          <div class="col px-5">
-            <div class="my-4">
-              <h2>Our Promise</h2>
-              <p>Empowering Your Success. Whether you're planting your first seed or scaling your garden, we're here to support every step of the way.</p>
-            </div>
+        </div>
+        <div class="col-md-4" data-aos="fade-up" data-aos-delay="100">
+          <div class="card feature-card h-100 text-center p-4">
+            <div class="mb-3"><i class="bi bi-award fs-1 text-success"></i></div>
+            <h3>Our Promise</h3>
+            <p>Empowering Your Success. Whether you're planting your first seed or scaling your garden, we're here to support every step of the way.</p>
+            <button class="btn btn-outline-success mt-2" onclick="scrollToSection('about-page')">Learn More</button>
           </div>
-          <div class="col px-5 grey-background">
-            <div class="my-4">
-              <h2>Guided Growth</h2>
-              <p>Learn from the Best. Access expert tips, articles, and videos on sustainable practices, modern farming techniques, and how to grow your own food.</p>
-            </div>    
+        </div>
+        <div class="col-md-4" data-aos="fade-up" data-aos-delay="200">
+          <div class="card feature-card h-100 text-center p-4">
+            <div class="mb-3"><i class="bi bi-lightbulb fs-1 text-success"></i></div>
+            <h3>Guided Growth</h3>
+            <p>Learn from the Best. Access expert tips, articles, and videos on sustainable practices, modern farming techniques, and how to grow your own food.</p>
+            <button class="btn btn-outline-success mt-2" onclick="scrollToSection('community-page')">Learn More</button>
           </div>
         </div>
       </div>
     </section>
-    <section id="module-page">
-      <div class="container-fluid">
-        <div class="row">
-          <div class="col ms-5">
-            <img src="images/ModulePage.png" alt="module" class="image-fluid " width="854px" height="600px">
+    <section id="module-carousel" class="container py-5">
+      <h2 class="text-center mb-4" data-aos="fade-right">Start Your Journey with our Farming Modules</h2>
+      <div id="modulesCarousel" class="carousel slide" data-bs-ride="carousel" data-aos="zoom-in">
+        <div class="carousel-inner">
+          <div class="carousel-item active">
+            <img src="images/ModulePage.png" class="d-block w-100 carousel-img" alt="Module 1">
+            <div class="carousel-caption d-none d-md-block bg-success bg-opacity-75 rounded-3 p-3">
+              <h5>Soil Preparation</h5>
+              <p>Learn the basics of preparing your soil for planting success.</p>
+            </div>
           </div>
-          <div class="col me-5 d-flex justify-content-center">
-            <div>
-              <h2 class="my-5">Start Your Journey with our<br>Farming Modules</h2>
-              <p class="mb-5 fs-5">Explore our modules and grow your farming skills from the ground up.</p>
-              <p class="mb-5 fs-5">Our farming modules simplify your journey into agriculture, <br>covering essentials from soil prep to sustainable practices. <br>Perfect for beginners or those refining their skills, each guide <br>provides practical, step-by-step knowledge you can apply immediately. <br>Learn at your pace and grow your success—one module at a time!</p>
-              <div class="">
-                <a class="btn btn-success mt-5" href="php/modulepage.php" role="button">Learn Now</a>
+          <div class="carousel-item">
+            <img src="html/moduleimages/planning.avif" class="d-block w-100 carousel-img" alt="Module 2">
+            <div class="carousel-caption d-none d-md-block bg-success bg-opacity-75 rounded-3 p-3">
+              <h5>Planning & Planting</h5>
+              <p>Discover how to plan your garden and plant efficiently.</p>
+            </div>
+          </div>
+          <div class="carousel-item">
+            <img src="html/moduleimages/technique.jpg" class="d-block w-100 carousel-img" alt="Module 3">
+            <div class="carousel-caption d-none d-md-block bg-success bg-opacity-75 rounded-3 p-3">
+              <h5>Modern Techniques</h5>
+              <p>Explore innovative and sustainable farming techniques.</p>
+            </div>
+          </div>
+        </div>
+        <button class="carousel-control-prev" type="button" data-bs-target="#modulesCarousel" data-bs-slide="prev">
+          <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+          <span class="visually-hidden">Previous</span>
+        </button>
+        <button class="carousel-control-next" type="button" data-bs-target="#modulesCarousel" data-bs-slide="next">
+          <span class="carousel-control-next-icon" aria-hidden="true"></span>
+          <span class="visually-hidden">Next</span>
+        </button>
+      </div>
+      <div class="text-center mt-4">
+        <a class="btn btn-success" href="php/modulepage.php" role="button">Learn Now</a>
+      </div>
+    </section>
+    <section id="community-page" class="container py-5">
+      <div class="row align-items-center">
+        <div class="col-md-6" data-aos="fade-right">
+          <h2 class="mb-4">Join the Community!</h2>
+          <p class="fs-4">Log in to connect with fellow growers, access exclusive resources, and unlock all the tools you need to thrive in farming. Together, we're building a supportive space for learning, sharing, and growing!</p>
+          <div class="d-flex gap-4 mt-4">
+            <div class="text-center">
+              <div class="counter" id="membersCounter">0</div>
+              <div>Members</div>
+            </div>
+            <div class="text-center">
+              <div class="counter" id="postsCounter">0</div>
+              <div>Posts</div>
+            </div>
+            <div class="text-center">
+              <div class="counter" id="modulesCounter">0</div>
+              <div>Modules</div>
+            </div>
+          </div>
+          <a class="btn btn-success mt-5" href="php/Forum/community.php" role="button">Join Now</a>
+        </div>
+        <div class="col-md-6 text-center" data-aos="fade-left">
+          <img src="images/AboutPage.png" alt="about" class="img-fluid rounded-4 shadow" style="max-width: 90%;">
+        </div>
+      </div>
+    </section>
+    <section id="about-page" class="container py-5">
+      <h2 class="text-center mb-4" data-aos="fade-up">About Teen-Anim</h2>
+      <div class="row justify-content-center">
+        <div class="col-md-8">
+          <div class="accordion" id="aboutAccordion">
+            <div class="accordion-item faq-item">
+              <h2 class="accordion-header" id="headingOne">
+                <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+                  Our Mission
+                </button>
+              </h2>
+              <div id="collapseOne" class="accordion-collapse collapse show" aria-labelledby="headingOne" data-bs-parent="#aboutAccordion">
+                <div class="accordion-body">
+                  Empowering young minds to lead the future of sustainable farming. At Teen-Anim, we believe agriculture should be exciting, innovative, and accessible for today's youth. Our mission is to spark interest in farming by offering insights, resources, and a supportive community to explore modern agriculture.
+                </div>
+              </div>
+            </div>
+            <div class="accordion-item faq-item">
+              <h2 class="accordion-header" id="headingTwo">
+                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+                  Why Focus on Youth?
+                </button>
+              </h2>
+              <div id="collapseTwo" class="accordion-collapse collapse" aria-labelledby="headingTwo" data-bs-parent="#aboutAccordion">
+                <div class="accordion-body">
+                  Young people need guidance on where to start, how to grow, and what role technology can play in farming. They want to understand sustainable practices, build practical skills, and discover the opportunities agriculture offers for a brighter, greener future.
+                </div>
+              </div>
+            </div>
+            <div class="accordion-item faq-item">
+              <h2 class="accordion-header" id="headingThree">
+                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
+                  What Does Teen-Anim Provide?
+                </button>
+              </h2>
+              <div id="collapseThree" class="accordion-collapse collapse" aria-labelledby="headingThree" data-bs-parent="#aboutAccordion">
+                <div class="accordion-body">
+                  Teen-Anim provides youth with the knowledge and tools to make informed decisions, experiment with hands-on techniques, and see the impact they can make through farming. We're here to cultivate the next generation of leaders in agriculture, one step at a time.
+                </div>
               </div>
             </div>
           </div>
         </div>
       </div>
     </section>
-    <section id="community-page">
-      <div class="container-fluid">
-        <div class="row">
-          <div class="col ms-5 d-flex justify-content-center">
-            <div>
-              <h2 class="my-5">Join the Community!</h1>
-              <p class="mb-5 fs-4">Log in to connect with fellow growers, access <br>exclusive resources, and unlock all the tools <br>you need to thrive in farming. Together, we’re <br>building a supportive space for learning, sharing, <br>and growing!</p>
-              <div>
-                <a class="btn btn-success mt-5" href="php/Forum/community.php" role="button">Join Now</a>
-              </div>
-            </div>
-          </div>
-          <div class="col me-5">
-            <img src="images/AboutPage.png" alt="about" class="image-fluid" width="854px" height="600px">
-          </div>
+    <section id="contact-page" class="container py-5">
+      <div class="row align-items-center">
+        <div class="col-md-6" data-aos="fade-right">
+          <h2 class="mb-3">Contact Us</h2>
+          <p class="fs-5">At Teen-Anim, we're always looking to improve and grow, just like you. Have ideas on how we can make farming more exciting for young people? Want to see new features, resources, or topics covered? We'd love to hear your thoughts!</p>
+          <p class="fs-5 mb-1"><strong>Email:</strong> teenanim2024@gmail.com</p>
+          <p class="fs-5"><strong>Phone Number:</strong> 09956957814</p>
+        </div>
+        <div class="col-md-6" data-aos="fade-left">
+          <h3 class="mb-3">Share Your Ideas</h3>
+          <form id="suggestionForm" action="php/suggestion.php" method="post">
+            <label for="suggestion" class="form-label">Enter your suggestions:</label>
+            <textarea class="form-control" id="suggestion" rows="7" name="message" required></textarea>
+            <button type="submit" class="btn btn-success mt-3">Send Suggestion</button>
+            <div id="suggestionMsg" class="mt-2"></div>
+          </form>
         </div>
       </div>
     </section>
-    <section id="about-page">
-      <div class="container-fluid text-center px-5 grey-background">
-        <h2 class="my-5">About Teen-Anim</h2>
-        <p class="mb-5 fs-5">Empowering young minds to lead the future of sustainable farming.</p>
-        <p class="mb-4 fs-5">At Teen-Anim, we believe agriculture should be exciting, innovative, and accessible for today’s youth. Our mission is to spark <br>interest in farming by offering insights, resources, and a supportive community to explore modern agriculture.</p>
-        <p class="mb-4 fs-5">Young people need guidance on where to start, how to grow, and what role technology can play in farming. They want to understand <br>sustainable practices, build practical skills, and discover the opportunities agriculture offers for a brighter, greener future.</p>
-        <p class="mb-5 fs-5">Teen-Anim provides youth with the knowledge and tools to make informed decisions, experiment with hands-on techniques, and see the <br>impact they can make through farming. We’re here to cultivate the next generation of leaders in agriculture, one step at a time.</p>
-      </div>
-    </section>
-    <section id="contact-page" class="contact-bg">
-      <div class="container-fluid">
-        <div class="row">
-          <div class="col d-flex justify-content-center">
-            <div>
-              <p class="text-center mt-3">Contact Us Now</p>
-              <h2 class="text-center mb-4">Leave Us A Message</h2>
-              <p class="text-center fs-4 mb-5">At FarmFuture, we’re always looking to improve <br>and grow, just like you. Have ideas on how we can <br>make farming more exciting for young people? <br>Want to see new features, resources, or topics <br>covered? We’d love to hear your thoughts!</p>
-              <p class="fs-5">Email: teenanim2024@gmail.com</p>
-              <p class="fs-5">Phone Number: 09956957814</p>
-            </div>
-          </div>
-          <div class="col">
-            <h2 class="mt-5 mb-3">Share Your Ideas</h2>
-            <form action="php/suggestion.php" method="post">
-              <label for="suggestion" class="form-label">Enter your suggestions:</label>
-              <textarea class="form-control" id="suggestion" rows="10" style="width: 700px;" name="message"></textarea>
-              <button type="submit" class="btn btn-success mb-5 mt-3">Send Suggestion</button>
-            </form>
-          </div>
-        </div>
-      </div>
-    </section>
+    <div class="contact-fab" onclick="scrollToSection('contact-page')" title="Contact Us">
+      <i class="bi bi-chat-dots"></i>
+    </div>
     <footer>
-      <div class="contianer-fluid footer-bg">
-        <div class="pt-3 mx-5 d-flex justify-content-around">
-          <p>Copyright 2024</p>
+      <div class="container-fluid footer-bg py-3 mt-5">
+        <div class="d-flex flex-column flex-md-row justify-content-between align-items-center px-5">
+          <p class="mb-2 mb-md-0">Copyright 2024</p>
           <img src="images/clearteenalogo.png" class="teenanimlogo mb-2" alt="TEENANIM LOGO">
-          <p>Terms & Conditions / Privacy Policy</p>
+          <p class="mb-0">Terms & Conditions / Privacy Policy</p>
         </div>
       </div>
     </footer>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/jquery@3.7.1/dist/jquery.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.js"></script>
+    <script>
+      // AOS init
+      AOS.init();
+
+      // Animated counters
+      function animateCounter(id, end, duration) {
+        let start = 0;
+        let step = Math.ceil(end / (duration / 20));
+        let el = document.getElementById(id);
+        let interval = setInterval(function() {
+          start += step;
+          if (start >= end) {
+            el.textContent = end;
+            clearInterval(interval);
+          } else {
+            el.textContent = start;
+          }
+        }, 20);
+      }
+      // Example values, replace with dynamic values if available
+      document.addEventListener('DOMContentLoaded', function() {
+        animateCounter('membersCounter', 120, 1200);
+        animateCounter('postsCounter', 350, 1200);
+        animateCounter('modulesCounter', 6, 1200);
+      });
+
+      // Scroll to section
+      function scrollToSection(id) {
+        const el = document.getElementById(id);
+        if (el) {
+          el.scrollIntoView({ behavior: 'smooth' });
+        }
+      }
+
+      // AJAX suggestion form
+      $(function() {
+        $('#suggestionForm').on('submit', function(e) {
+          e.preventDefault();
+          var form = $(this);
+          var msgDiv = $('#suggestionMsg');
+          $.ajax({
+            url: form.attr('action'),
+            method: 'POST',
+            data: form.serialize(),
+            success: function(response) {
+              msgDiv.html('<div class="alert alert-success">Thank you for your suggestion!</div>');
+              form[0].reset();
+            },
+            error: function() {
+              msgDiv.html('<div class="alert alert-danger">There was an error. Please try again later.</div>');
+            }
+          });
+        });
+      });
+    </script>
 </body>
 </html>

@@ -38,38 +38,12 @@
     </style>
 </head>
 <body>
-  <nav class="navbar navbar-expand-lg sticky-top px-5 bg-success text-white">
-      <div class="container-fluid">
-          <a class="navbar-brand mx-5 text-white" href="../index.php">
-                <img src="../images/clearteenalogo.png" class="teenanimlogo" alt="home logo" style="width: 50px; height: 50px;">
-                <strong class="fs-5 ms-3">TEEN-ANIM</strong>
-          </a>
-          <div class="collapse navbar-collapse" id="navbarNav">
-              <ul class="navbar-nav ms-auto">
-                  <li class="nav-item">
-                      <a class="nav-link fw-semibold text-white" href="Forum/community.php">Farming Community</a>
-                  </li>
-                  <li class="nav-item">
-                      <a class="nav-link fw-semibold text-white mx-5" href="simulator.php">Simulation</a>
-                  </li>
-                  <li class="nav-item">
-                      <a class="nav-link fw-semibold text-white me-5" href="plantinder.php">Plantinder</a>
-                  </li>
-                  <li class="nav-item">
-                      <a class="nav-link fw-semibold text-white me-5" href="modulepage.php">Module</a>
-                  </li>
-                  <li class="nav-item">
-                      <a class="nav-link fw-semibold text-white me-5" href="userpage.php">Profile</a>
-                  </li>
-              </ul>
-          </div>
-      </div>
-  </nav>
-      <main class="container text-center mt-5">
-        <div class="iframe-container">
-            <iframe src="https://farmsimumlation.netlify.app/" frameborder="0"></iframe>
-        </div>
-      </main>
+<?php include 'navbar.php'; ?>
+  <main class="container text-center mt-5">
+    <div class="iframe-container">
+        <iframe src="https://farmsimumlation.netlify.app/" frameborder="0"></iframe>
+    </div>
+  </main>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>

@@ -57,16 +57,7 @@ include('../connection.php');
     </style>
 </head>
 <body>
-    <nav class="navbar navbar-expand-lg navbar-dark bg-dark px-5">
-        <div class="container-fluid">
-            <a class="navbar-brand" href="#">Admin Dashboard</a>
-            <ul class="navbar-nav ms-auto">
-                <li class="nav-item">
-                    <a class="nav-link" href="../logout.php">Logout</a>
-                </li>
-            </ul>
-        </div>
-    </nav>
+<?php include '../navbar.php'; ?>
     <div class="main">
         <div class="sidebar ">
             <div class="text-center py-3">
@@ -84,6 +75,20 @@ include('../connection.php');
             </ul>
         </div>
         <div class="content">
+            <?php if (isset($_GET['success'])): ?>
+                <div class="alert alert-success alert-dismissible fade show" role="alert">
+                    <?php echo htmlspecialchars($_GET['success']); ?>
+                    <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                </div>
+            <?php endif; ?>
+            
+            <?php if (isset($_GET['error'])): ?>
+                <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                    <?php echo htmlspecialchars($_GET['error']); ?>
+                    <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                </div>
+            <?php endif; ?>
+            
             <section id="user-management" class="content-section">
                 <h2>User Management</h2>
                 <div class="mb-3">
@@ -255,6 +260,7 @@ include('../connection.php');
                             <th>Sunlight</th>
                             <th>Tips</th>
                             <th>Edit</th>
+                            <th>Delete</th>
                         </tr>
                     </thead>
                     <tbody id="plantTable">
@@ -272,6 +278,9 @@ include('../connection.php');
                             echo "<td>" . htmlspecialchars($row['tips']) . "</td>";
                             echo "<td>
                                     <a href='editplant.php?id=" . $row['plant_id'] . "' class='btn btn-sm btn-warning'>Edit</a>
+                                  </td>";
+                            echo "<td>
+                                    <a href='deleteplant.php?id=" . $row['plant_id'] . "' class='btn btn-sm btn-danger' onclick='return confirm(\"Are you sure you want to delete this plant?\")'>Delete</a>
                                   </td>";
                             echo "</tr>";
                         }

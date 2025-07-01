@@ -25,6 +25,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Farming Forum</title>
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="../../css/homepage.css">
   <style>
     body, html {
       height: 100%;
@@ -37,20 +38,7 @@
   </style>
 </head>
 <body>
-  <nav class="navbar navbar-expand-lg navbar-dark bg-success">
-    <div class="container-fluid">
-      <a class="navbar-brand ms-5" href="#">Farming Community Forum</a>
-      <?php
-        if ($_SESSION['role'] == 'student') {
-            echo '<a class="navbar-brand me-5" href="../userpage.php">Profile</a>';
-        } elseif ($_SESSION['role'] == 'agriculturist') {
-            echo '<a class="navbar-brand me-5" href="../Admin/agriculturistpage.php">Profile</a>';
-        } else {
-            echo '<a class="navbar-brand me-5" href="../login.php">Profile</a>';
-        }
-      ?>
-    </div>
-  </nav>
+<?php include '../navbar.php'; ?>
 
   <main class="container my-4">
     <div class="card mb-4">
