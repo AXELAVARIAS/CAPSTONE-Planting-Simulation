@@ -126,17 +126,110 @@ include('../connection.php');
             font-size: 1.5rem;
             margin-bottom: 1.2rem;
         }
+        /* Responsive header for small screens */
+        @media (max-width: 768px) {
+            .admin-header {
+                flex-direction: row;
+                align-items: center;
+                justify-content: space-between;
+                padding: 0.5rem 1rem;
+                font-size: 1rem;
+                gap: 0.5rem;
+                position: relative;
+            }
+            .header-left {
+                flex: 1 1 0;
+                display: flex;
+                align-items: center;
+            }
+            .header-center {
+                position: absolute;
+                left: 50%;
+                transform: translateX(-50%);
+                z-index: 201;
+            }
+            .header-right {
+                flex: 1 1 0;
+                display: flex;
+                justify-content: flex-end;
+                align-items: center;
+            }
+            .admin-header .logo img {
+                height: 28px;
+                width: 28px;
+            }
+            .admin-header .logout-link {
+                align-self: center;
+                margin-top: 0;
+                font-size: 0.95rem;
+            }
+            .admin-nav-toggle {
+                display: block;
+                margin: 0;
+            }
+        }
+        /* Responsive nav for small screens */
+        @media (max-width: 768px) {
+            .admin-nav {
+                flex-direction: column;
+                gap: 0.5rem;
+                padding: 0.5rem 1rem;
+                display: none;
+                background: #23272b;
+                position: relative;
+                margin-top: 0;
+            }
+            .admin-nav.show {
+                display: flex;
+                margin-top: 0.5rem;
+            }
+            .admin-nav-toggle {
+                display: block;
+                position: relative;
+                z-index: 200;
+                margin-top: 0.5rem;
+                margin-left: 0.5rem;
+            }
+            .admin-nav .nav-link {
+                width: 100%;
+                justify-content: flex-start;
+                font-size: 1rem;
+                padding: 0.75rem 1rem;
+                background: #23272b;
+                color: #fff;
+                border-radius: 4px;
+            }
+        }
+        @media (min-width: 769px) {
+            .admin-nav-toggle {
+                display: none;
+            }
+            .admin-nav {
+                display: flex !important;
+                position: static;
+                margin-top: 0;
+            }
+        }
     </style>
 </head>
 <body>
     <div class="admin-header">
-        <span class="logo">
-            <img src="../../images/clearteenalogo.png" alt="Logo">
-            Admin Dashboard
-        </span>
-        <a href="../logout.php" class="logout-link"><i class="bi bi-box-arrow-right"></i>Logout</a>
+        <div class="header-left">
+            <span class="logo">
+                <img src="../../images/clearteenalogo.png" alt="Logo" class="img-fluid">
+                Admin Dashboard
+            </span>
+        </div>
+        <div class="header-center">
+            <button class="admin-nav-toggle d-md-none" id="adminNavToggle" aria-label="Toggle navigation" style="background:none;border:none;color:#fff;font-size:2rem;">
+                <i class="bi bi-list"></i>
+            </button>
+        </div>
+        <div class="header-right">
+            <a href="../logout.php" class="logout-link"><i class="bi bi-box-arrow-right"></i>Logout</a>
+        </div>
     </div>
-    <nav class="admin-nav">
+    <nav class="admin-nav" id="adminNav">
         <a class="nav-link" href="#" onclick="showSection('user-management'); setActiveNav(this); return false;" id="nav-user"><i class="bi bi-people"></i>User Management</a>
         <a class="nav-link" href="#" onclick="showSection('module-management'); setActiveNav(this); return false;" id="nav-module"><i class="bi bi-journal-text"></i>Module Management</a>
         <a class="nav-link" href="#" onclick="showSection('forum-management'); setActiveNav(this); return false;" id="nav-forum"><i class="bi bi-chat-dots"></i>Forum Management</a>
@@ -555,6 +648,11 @@ include('../connection.php');
                 }
             }, 3500);
         }
+        // Hamburger menu toggle
+        document.getElementById('adminNavToggle').addEventListener('click', function() {
+            var nav = document.getElementById('adminNav');
+            nav.classList.toggle('show');
+        });
     </script>
 </body>
 </html>

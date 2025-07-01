@@ -6,28 +6,73 @@
     <title>Plant Swipe</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../css/homepage.css">
     <style>
         body{
             background:radial-gradient(circle,rgba(40, 167, 69, .9),rgba(40, 167, 69, .5));
         }
         .card {
-            width: 500px;
-            margin: auto;
+            max-width: 500px;
+            width: 100%;
+            margin: 0 auto;
+            box-sizing: border-box;
         }
         .swipe-container {
             position: relative;
             width: 100%;
             height: 400px;
             margin-top: 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
         }
         .card-img-top {
             height: 300px;
             object-fit: cover;
+            width: 100%;
+            border-top-left-radius: 0.5rem;
+            border-top-right-radius: 0.5rem;
         }
         .buttons {
             display: flex;
             justify-content: space-around;
             margin-top: 50px;
+            gap: 1.5rem;
+        }
+        @media (max-width: 600px) {
+            .card {
+                max-width: 98vw;
+                margin: 0 1vw;
+            }
+            .swipe-container {
+                height: auto;
+                min-height: 320px;
+            }
+            .card-img-top {
+                height: 180px;
+            }
+            .buttons {
+                margin-top: 24px;
+                gap: 1rem;
+            }
+            h1, .text-center.my-5 {
+                font-size: 2rem !important;
+                margin-top: 1.5rem !important;
+                margin-bottom: 1.5rem !important;
+            }
+            .card-title {
+                font-size: 1.1rem;
+            }
+            .card-text {
+                font-size: 0.98rem;
+            }
+            .buttons button {
+                width: 48px;
+                height: 48px;
+                font-size: 1.3rem;
+                padding: 0;
+            }
         }
     </style>
 </head>
@@ -104,5 +149,6 @@
 
         fetchPlants();
     </script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>

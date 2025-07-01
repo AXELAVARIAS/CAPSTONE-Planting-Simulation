@@ -38,6 +38,8 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
     <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../css/homepage.css">
     <style>
         body {
             background: linear-gradient(135deg, #e8f5e9 0%, #c8e6c9 100%);
@@ -145,6 +147,42 @@
         }
         .remove-fav-btn:hover {
             background: #b71c1c;
+        }
+        /* Responsive profile card and content */
+        @media (max-width: 700px) {
+            .main-content {
+                padding: 0.5rem;
+            }
+            .card {
+                border-radius: 0.7rem;
+                padding: 0.5rem;
+            }
+            .card-header {
+                flex-direction: column;
+                align-items: flex-start !important;
+                padding: 1rem 1rem 0.5rem 1rem;
+            }
+            .d-flex.align-items-center.mb-3 {
+                flex-direction: column !important;
+                align-items: center !important;
+                text-align: center;
+            }
+            .d-flex.align-items-center.mb-3 img.avatar {
+                width: 120px;
+                height: 120px;
+                margin-bottom: 1rem;
+            }
+            .d-flex.align-items-center.mb-3 > div {
+                margin-left: 0 !important;
+            }
+            .accordion-item, .accordion-button, .accordion-body {
+                font-size: 1rem;
+            }
+            .sidebar {
+                flex-direction: column;
+                align-items: flex-start;
+                padding: 0.5rem 1rem;
+            }
         }
     </style>
 </head>
@@ -282,7 +320,7 @@
                         <div class="d-flex flex-wrap">
                             <?php while ($plant = $favorite_result->fetch_assoc()): ?>
                                 <div class="card favorite-plant-card position-relative" data-plant-id="<?php echo $plant['plant_id']; ?>">
-                                    <img src="../images/<?php echo htmlspecialchars($plant['image']); ?>" class="favorite-plant-img card-img-top" alt="<?php echo htmlspecialchars($plant['name']); ?>">
+                                    <img src="../images/<?php echo htmlspecialchars($plant['image']) ? htmlspecialchars($plant['image']) : 'default-plant.png'; ?>" class="favorite-plant-img card-img-top" alt="<?php echo htmlspecialchars($plant['name']); ?>" onerror="this.onerror=null;this.src='../images/default-plant.png';">
                                     <div class="card-body">
                                         <h6 class="card-title mb-1"><?php echo htmlspecialchars($plant['name']); ?></h6>
                                         <button class="remove-fav-btn" title="Remove from Favorites"><i class="bi bi-x"></i></button>
@@ -338,12 +376,23 @@ $(function() {
     $('.remove-fav-btn').on('click', function() {
         var card = $(this).closest('.favorite-plant-card');
         var plantId = card.data('plant-id');
+        var container = card.parent();
         $.ajax({
             url: 'remove_favorite.php',
             method: 'POST',
             data: { plant_id: plantId },
+            dataType: 'json',
             success: function(response) {
-                card.fadeOut(300, function() { $(this).remove(); });
+                if (response.status === 'success') {
+                    card.fadeOut(300, function() {
+                        $(this).remove();
+                        if (container.find('.favorite-plant-card').length === 0) {
+                            container.parent().append('<p>No favorite plants yet.</p>');
+                        }
+                    });
+                } else {
+                    alert(response.message || 'Failed to remove favorite.');
+                }
             },
             error: function() {
                 alert('Failed to remove favorite.');

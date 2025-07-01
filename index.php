@@ -8,6 +8,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Teen-Anim</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="css/homepage.css">
     <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
     <style>
@@ -111,14 +112,6 @@
         padding-bottom: 0.5rem;
         z-index: 1050;
       }
-      .navbar-modern .navbar-brand {
-        display: flex;
-        align-items: center;
-        font-weight: bold;
-        font-size: 1.5rem;
-        color: #388e3c !important;
-        letter-spacing: 1px;
-      }
       .navbar-modern .teenanimlogo {
         width: 48px;
         height: 48px;
@@ -195,58 +188,8 @@
     </style>
 </head>
 <body>
+<?php include 'php/navbar.php'; ?>
     <section class="container-fluid hero-bg d-flex flex-column justify-content-start align-items-center position-relative" style="padding-top: 120px; min-height: 50vh;">
-      <?php if (isset($_SESSION['logged_in']) && $_SESSION['logged_in'] === true): ?>
-          <nav class="navbar navbar-expand-lg fixed-top navbar-modern w-100">
-              <div class="container-fluid">
-                  <a class="navbar-brand" href="index.php">
-                      <img src="images/clearteenalogo.png" class="teenanimlogo" alt="home logo">
-                      TEEN-ANIM
-                  </a>
-                  <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-                      <span class="navbar-toggler-icon"></span>
-                  </button>
-                  <div class="collapse navbar-collapse" id="navbarNav">
-                      <ul class="navbar-nav ms-auto align-items-lg-center">
-                          <li class="nav-item">
-                              <a class="nav-link" href="php/Forum/community.php">Farming Community</a>
-                          </li>
-                          <li class="nav-item">
-                              <a class="nav-link" href="php/simulator.php">Simulation</a>
-                          </li>
-                          <li class="nav-item">
-                              <a class="nav-link" href="php/plantinder.php">Plantinder</a>
-                          </li>
-                          <li class="nav-item">
-                              <a class="nav-link" href="php/modulepage.php">Module</a>
-                          </li>
-                          <li class="nav-item">
-                              <a class="nav-link" href="php/userpage.php">Profile</a>
-                          </li>
-                      </ul>
-                  </div>
-              </div>
-          </nav>
-        <?php else: ?>
-          <nav class="navbar navbar-expand-lg fixed-top navbar-modern w-100">
-              <div class="container-fluid">
-                  <a class="navbar-brand" href="index.php">
-                      <img src="images/clearteenalogo.png" class="teenanimlogo" alt="home logo">
-                      TEEN-ANIM
-                  </a>
-                  <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-                      <span class="navbar-toggler-icon"></span>
-                  </button>
-                  <div class="collapse navbar-collapse" id="navbarNav">
-                      <ul class="navbar-nav ms-auto align-items-lg-center">
-                          <li class="nav-item">
-                              <a href="php/login.php" class="btn btn-signin">Sign In</a>
-                          </li>
-                      </ul>
-                  </div>
-              </div>
-          </nav>
-        <?php endif; ?>
         <div class="text-center text-white d-flex flex-column justify-content-center align-items-center" style="z-index:2;">
           <h1 class="typewriter mb-3">Welcome to Teen-Anim</h1>
           <p class="lead my-2 fs-3" data-aos="fade-up">Empowering the next generation of farmers</p>
