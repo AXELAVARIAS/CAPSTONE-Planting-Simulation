@@ -44,10 +44,22 @@
       .feature-card {
         transition: transform 0.2s, box-shadow 0.2s;
         cursor: pointer;
+        min-width: 370px;
+        max-width: 500px;
+        font-size: 1.25rem;
+        padding: 2.5rem 2rem 2rem 2rem !important;
       }
-      .feature-card:hover {
-        transform: translateY(-10px) scale(1.03);
-        box-shadow: 0 8px 24px rgba(76,175,80,0.15);
+      .feature-card h3 {
+        font-size: 2.2rem;
+        margin-bottom: 1.2rem;
+      }
+      .feature-card p {
+        font-size: 1.25rem;
+        margin-bottom: 2rem;
+      }
+      .feature-card .btn {
+        font-size: 1.15rem;
+        padding: 0.75rem 2.5rem;
       }
       .carousel-img {
         max-height: 350px;
@@ -87,6 +99,9 @@
       @media (max-width: 768px) {
         .carousel-img { max-height: 200px; }
         .typewriter { font-size: 1.5rem; }
+      }
+      @media (max-width: 991.98px) {
+        .feature-card { min-width: 100%; max-width: 100%; }
       }
       .navbar-modern {
         background: #fff !important;
@@ -161,22 +176,26 @@
       .navbar-toggler:focus {
         box-shadow: 0 0 0 2px #4caf50;
       }
-      @media (max-width: 991.98px) {
-        .navbar-modern .navbar-nav .nav-link {
-          margin: 0.5rem 0;
-          font-size: 1.2rem;
-        }
-        .navbar-modern .navbar-collapse {
-          background: #fff;
-          border-radius: 0 0 1rem 1rem;
-          box-shadow: 0 8px 24px rgba(76,175,80,0.08);
-          padding: 1rem 0;
-        }
+      #about-page h2 {
+        font-size: 2.8rem;
+        font-weight: 700;
+        margin-bottom: 2.2rem;
+      }
+      #aboutAccordion .accordion-button {
+        font-size: 1.5rem;
+        padding: 1.25rem 1.5rem;
+      }
+      #aboutAccordion .accordion-body {
+        font-size: 1.25rem;
+        padding: 1.5rem 2rem;
+      }
+      #aboutAccordion .accordion-item {
+        font-size: 1.15rem;
       }
     </style>
 </head>
 <body>
-    <section class="container-fluid hero-bg d-flex align-items-center justify-content-center flex-column position-relative" style="margin-top: 80px;">
+    <section class="container-fluid hero-bg d-flex flex-column justify-content-start align-items-center position-relative" style="padding-top: 120px; min-height: 50vh;">
       <?php if (isset($_SESSION['logged_in']) && $_SESSION['logged_in'] === true): ?>
           <nav class="navbar navbar-expand-lg fixed-top navbar-modern w-100">
               <div class="container-fluid">
