@@ -152,7 +152,7 @@
 <?php include 'navbar.php'; ?>
 <div class="sidebar d-flex flex-column align-items-center">
     <img src="../images/clearteenalogo.png" class="avatar" alt="User Avatar">
-    <div class="username">Hi, <?php echo htmlspecialchars($user['username']); ?>!</div>
+    <div class="username">Hi, <?php echo htmlspecialchars($user['name']); ?>!</div>
     <nav class="nav flex-column w-100 mt-4">
         <a class="nav-link <?php echo ($active_section == 'profile') ? 'active' : ''; ?>" href="?section=profile"><i class="bi bi-person-circle"></i> Profile</a>
         <a class="nav-link <?php echo ($active_section == 'settings') ? 'active' : ''; ?>" href="?section=settings"><i class="bi bi-gear"></i> Settings</a>

@@ -105,37 +105,52 @@ if (strpos($_SERVER['PHP_SELF'], 'Admin/') !== false) {
 </style>
 <nav class="navbar navbar-expand-lg fixed-top navbar-modern w-100">
   <div class="container-fluid">
-    <a class="navbar-brand" href="<?php echo $base; ?>index.php">
-      <img src="<?php echo $base; ?>images/clearteenalogo.png" class="teenanimlogo" alt="home logo">
-      TEEN-ANIM
-    </a>
-    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-      <span class="navbar-toggler-icon"></span>
-    </button>
-    <div class="collapse navbar-collapse" id="navbarNav">
-      <ul class="navbar-nav ms-auto align-items-lg-center">
-        <li class="nav-item">
-          <a class="nav-link" href="<?php echo $base; ?>php/Forum/community.php">Farming Community</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" href="<?php echo $base; ?>php/simulator.php">Simulation</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" href="<?php echo $base; ?>php/plantinder.php">Plantinder</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" href="<?php echo $base; ?>php/modulepage.php">Module</a>
-        </li>
-        <?php if (isset($_SESSION['logged_in']) && $_SESSION['logged_in'] === true): ?>
+    <?php if (!isset($_SESSION['logged_in']) || $_SESSION['logged_in'] !== true): ?>
+      <?php
+        $is_login_page = strpos($_SERVER['PHP_SELF'], 'login.php') !== false;
+      ?>
+      <div class="d-flex w-100 align-items-center">
+        <a class="navbar-brand me-auto" href="<?php echo $base; ?>index.php">
+          <img src="<?php echo $base; ?>images/clearteenalogo.png" class="teenanimlogo" alt="home logo">
+          TEEN-ANIM
+        </a>
+        <?php if (!$is_login_page): ?>
+        <div class="flex-grow-1 d-flex justify-content-center">
+          <a href="<?php echo $base; ?>php/login.php" class="btn btn-signin">Sign In</a>
+        </div>
+        <div style="width: 120px;"></div>
+        <?php else: ?>
+        <div class="flex-grow-1"></div>
+        <div style="width: 120px;"></div>
+        <?php endif; ?>
+      </div>
+    <?php else: ?>
+      <a class="navbar-brand" href="<?php echo $base; ?>index.php">
+        <img src="<?php echo $base; ?>images/clearteenalogo.png" class="teenanimlogo" alt="home logo">
+        TEEN-ANIM
+      </a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav ms-auto align-items-lg-center">
+          <li class="nav-item">
+            <a class="nav-link" href="<?php echo $base; ?>php/Forum/community.php">Farming Community</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="<?php echo $base; ?>php/simulator.php">Simulation</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="<?php echo $base; ?>php/plantinder.php">Plantinder</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="<?php echo $base; ?>php/modulepage.php">Module</a>
+          </li>
           <li class="nav-item">
             <a class="nav-link" href="<?php echo $base; ?>php/userpage.php">Profile</a>
           </li>
-        <?php else: ?>
-          <li class="nav-item">
-            <a href="<?php echo $base; ?>php/login.php" class="btn btn-signin">Sign In</a>
-          </li>
-        <?php endif; ?>
-      </ul>
-    </div>
+        </ul>
+      </div>
+    <?php endif; ?>
   </div>
 </nav> 
