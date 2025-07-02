@@ -189,7 +189,7 @@
 </head>
 <body>
 <?php include 'php/navbar.php'; ?>
-    <section class="container-fluid hero-bg d-flex flex-column justify-content-start align-items-center position-relative" style="padding-top: 70px; min-height: 50vh;">
+    <section class="container-fluid hero-bg d-flex flex-column justify-content-start align-items-center position-relative" style="padding-top: 70px; min-height: 45vh;">
         <div class="text-center text-white d-flex flex-column justify-content-center align-items-center" style="z-index:2;">
           <h1 class="typewriter mb-3">Welcome to Teen-Anim</h1>
           <p class="lead my-2 fs-3" data-aos="fade-up">Empowering the next generation of farmers</p>
