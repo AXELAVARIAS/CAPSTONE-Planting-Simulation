@@ -26,6 +26,19 @@
         width: 100%;
         height: 120px;
       }
+      /* Slide-in effect for hero heading */
+      .slide-in {
+        opacity: 0;
+        transform: translateY(-60px);
+        animation: slideInTop 1.2s cubic-bezier(0.23, 1, 0.32, 1) forwards;
+        font-size: 2.5rem;
+      }
+      @keyframes slideInTop {
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
       .typewriter {
         display: inline-block;
         border-right: 2px solid #fff;
@@ -189,9 +202,9 @@
 </head>
 <body>
 <?php include 'php/navbar.php'; ?>
-    <section class="container-fluid hero-bg d-flex flex-column justify-content-start align-items-center position-relative" style="padding-top: 70px; min-height: 45vh;">
+    <section class="container-fluid hero-bg d-flex flex-column justify-content-start align-items-center position-relative" style="padding-top: 30px; min-height: 40vh;">
         <div class="text-center text-white d-flex flex-column justify-content-center align-items-center" style="z-index:2;">
-          <h1 class="typewriter mb-3">Welcome to Teen-Anim</h1>
+          <h1 class="slide-in mb-3">Welcome to Teen-Anim</h1>
           <p class="lead my-2 fs-3" data-aos="fade-up">Empowering the next generation of farmers</p>
           <p class="mb-4 fs-4" data-aos="fade-up" data-aos-delay="100">Join us in exploring the exciting world of agriculture. Learn, grow, and connect with fellow young farmers. Together, we can cultivate a sustainable future.</p>
           <?php if (!isset($_SESSION['logged_in']) || $_SESSION['logged_in'] !== true): ?>
