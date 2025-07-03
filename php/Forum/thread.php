@@ -10,14 +10,14 @@ if (!isset($_SESSION['user_id'])) {
 if (isset($_GET['id'])) {
     $question_id = intval($_GET['id']);
 
-    $stmt = $conn->prepare("SELECT q.title, q.body, q.created_at, u.username FROM Questions q JOIN Users u ON q.user_id = u.user_id WHERE q.question_id = ?");
+    $stmt = $conn->prepare("SELECT q.title, q.body, q.created_at, u.username, u.profile_picture FROM Questions q JOIN Users u ON q.user_id = u.user_id WHERE q.question_id = ?");
     $stmt->bind_param("i", $question_id);
     $stmt->execute();
-    $stmt->bind_result($title, $body, $created_at, $username);
+    $stmt->bind_result($title, $body, $created_at, $username, $profile_picture);
     $stmt->fetch();
     $stmt->close();
 
-    $reply_stmt = $conn->prepare("SELECT r.reply_id, r.body, r.created_at, u.username FROM reply r JOIN Users u ON r.user_id = u.user_id WHERE r.question_id = ? ORDER BY r.created_at ASC");
+    $reply_stmt = $conn->prepare("SELECT r.reply_id, r.body, r.created_at, u.username, u.profile_picture FROM reply r JOIN Users u ON r.user_id = u.user_id WHERE r.question_id = ? ORDER BY r.created_at ASC");
     $reply_stmt->bind_param("i", $question_id);
     $reply_stmt->execute();
     $replies = $reply_stmt->get_result();
@@ -237,7 +237,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_SESSION['user_id'])) {
     <main class="container my-4">
         <div class="thread-card mb-4">
             <div class="thread-header">
-                <div class="thread-avatar"><i class="bi bi-person-circle"></i></div>
+                <div class="thread-avatar">
+                  <img src="<?= !empty($profile_picture) ? '../../images/profile_pics/' . htmlspecialchars($profile_picture) : '../../images/clearteenalogo.png' ?>" alt="User Avatar" style="width:100%;height:100%;object-fit:cover;border-radius:50%;" onerror="this.onerror=null;this.src='../../images/clearteenalogo.png';">
+                </div>
                 <div>
                     <div class="thread-title"><?= htmlspecialchars($title) ?></div>
                     <div class="thread-meta">Posted by <?= htmlspecialchars($username) ?> on <?= $created_at ?></div>
@@ -257,7 +259,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_SESSION['user_id'])) {
             <?php while ($reply = $replies->fetch_assoc()): ?>
                 <div class="reply-card-container">
                   <div class="reply-card">
-                    <div class="reply-avatar"><i class="bi bi-person-circle"></i></div>
+                    <div class="reply-avatar">
+                      <img src="<?= !empty($reply['profile_picture']) ? '../../images/profile_pics/' . htmlspecialchars($reply['profile_picture']) : '../../images/clearteenalogo.png' ?>" alt="User Avatar" style="width:100%;height:100%;object-fit:cover;border-radius:50%;" onerror="this.onerror=null;this.src='../../images/clearteenalogo.png';">
+                    </div>
                     <div class="reply-content">
                       <div class="reply-meta">Replied by <?= htmlspecialchars($reply['username']) ?> on <?= date('M d, Y', strtotime($reply['created_at'])) ?></div>
                       <div class="reply-text">

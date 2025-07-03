@@ -33,6 +33,8 @@
     $favorite_result = $conn->query($favorite_sql);
 
     $active_section = isset($_GET['section']) ? $_GET['section'] : 'profile'; 
+
+    $profile_pic = !empty($user['profile_picture']) ? '../images/profile_pics/' . htmlspecialchars($user['profile_picture']) : '../images/clearteenalogo.png';
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -194,7 +196,7 @@
 <body>
 <?php include 'navbar.php'; ?>
 <div class="sidebar d-flex flex-column align-items-center">
-    <img src="../images/clearteenalogo.png" class="avatar" alt="User Avatar">
+    <img src="<?php echo $profile_pic; ?>" class="avatar" alt="User Avatar" onerror="this.onerror=null;this.src='../images/clearteenalogo.png';">
     <div class="username">Hi, <?php echo htmlspecialchars($user['name']); ?>!</div>
     <nav class="nav flex-column w-100 mt-4">
         <a class="nav-link <?php echo ($active_section == 'profile') ? 'active' : ''; ?>" href="?section=profile"><i class="bi bi-person-circle"></i> Profile</a>
@@ -213,10 +215,13 @@
                 </div>
                 <div class="card-body">
                     <div class="d-flex align-items-center mb-3">
-                        <img src="../images/clearteenalogo.png" class="avatar me-3" alt="User Avatar">
+                        <img src="<?php echo $profile_pic; ?>" class="avatar me-3" alt="User Avatar" onerror="this.onerror=null;this.src='../images/clearteenalogo.png';">
                         <div>
                             <h4 class="mb-0"><?php echo htmlspecialchars($user['name']); ?></h4>
                             <div class="text-muted">@<?php echo htmlspecialchars($user['username']); ?></div>
+                            <button class="btn btn-outline-secondary btn-sm ms-2" data-bs-toggle="modal" data-bs-target="#uploadProfilePicModal">
+                                <i class="bi bi-upload"></i> Change Picture
+                            </button>
                         </div>
                     </div>
                     <hr>
@@ -367,6 +372,26 @@
         </div>
       </form>
     </div>
+  </div>
+</div>
+
+<!-- Upload Profile Picture Modal -->
+<div class="modal fade" id="uploadProfilePicModal" tabindex="-1" aria-labelledby="uploadProfilePicModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <form class="modal-content" action="User/upload_profile_picture.php" method="POST" enctype="multipart/form-data">
+      <div class="modal-header">
+        <h5 class="modal-title" id="uploadProfilePicModalLabel">Upload Profile Picture</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <input type="file" class="form-control" name="profile_picture" accept="image/*" required>
+        <small class="text-muted">Max size: 2MB. Allowed: JPG, PNG, GIF.</small>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+        <button type="submit" class="btn btn-success">Upload</button>
+      </div>
+    </form>
   </div>
 </div>
 
