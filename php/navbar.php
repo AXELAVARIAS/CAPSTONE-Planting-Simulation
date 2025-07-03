@@ -14,6 +14,29 @@ if (strpos($_SERVER['PHP_SELF'], 'Admin/') !== false) {
 } else {
     $base = '';
 }
+
+// Get current page for active navigation
+$current_page = basename($_SERVER['PHP_SELF']);
+$current_path = $_SERVER['PHP_SELF'];
+
+// Function to check if a link should be active
+function isActiveLink($link_path, $current_path, $current_page) {
+    // Check for exact page match
+    if (strpos($current_path, $link_path) !== false) {
+        return true;
+    }
+    
+    // Special cases for different sections
+    if ($link_path === 'community.php' && strpos($current_path, 'Forum/') !== false) {
+        return true;
+    }
+    
+    if ($link_path === 'index.php' && $current_page === 'index.php') {
+        return true;
+    }
+    
+    return false;
+}
 ?>
 <style>
   body {
@@ -34,6 +57,25 @@ if (strpos($_SERVER['PHP_SELF'], 'Admin/') !== false) {
     font-size: 1.5rem;
     color: #388e3c !important;
     letter-spacing: 1px;
+    transition: background 0.2s, color 0.2s, box-shadow 0.2s;
+    border-radius: 10px;
+    padding: 0.25rem 0.75rem;
+    cursor: pointer;
+    height: 56px;
+    line-height: 48px;
+    min-width: 0;
+    box-sizing: border-box;
+  }
+  .navbar-modern .navbar-brand:hover, .navbar-modern .navbar-brand:focus {
+    background: rgba(76, 175, 80, 0.10);
+    color: #256029 !important;
+    box-shadow: 0 2px 8px rgba(76, 175, 80, 0.10);
+    text-decoration: none;
+  }
+  .navbar-modern .navbar-brand:hover .teenanimlogo, .navbar-modern .navbar-brand:focus .teenanimlogo {
+    border-color: #256029;
+    filter: brightness(0.95);
+    transition: border-color 0.2s, filter 0.2s;
   }
   .navbar-modern .teenanimlogo {
     width: 48px;
@@ -51,25 +93,34 @@ if (strpos($_SERVER['PHP_SELF'], 'Admin/') !== false) {
     margin: 0 0.5rem;
     position: relative;
     transition: color 0.2s;
+    padding: 0.5rem 1rem !important;
+    border-radius: 8px;
   }
   .navbar-modern .navbar-nav .nav-link::after {
     content: '';
     display: block;
     width: 0;
-    height: 2px;
+    height: 3px;
     background: #4caf50;
-    transition: width 0.3s;
+    transition: width 0.3s ease;
     position: absolute;
-    left: 0;
-    bottom: -4px;
+    left: 50%;
+    bottom: -2px;
+    transform: translateX(-50%);
+    border-radius: 2px;
   }
   .navbar-modern .navbar-nav .nav-link:hover,
   .navbar-modern .navbar-nav .nav-link.active {
     color: #256029 !important;
+    background-color: rgba(76, 175, 80, 0.1);
   }
   .navbar-modern .navbar-nav .nav-link:hover::after,
   .navbar-modern .navbar-nav .nav-link.active::after {
-    width: 100%;
+    width: 80%;
+  }
+  .navbar-modern .navbar-nav .nav-link.active {
+    font-weight: 600;
+    box-shadow: 0 2px 8px rgba(76, 175, 80, 0.15);
   }
   .navbar-modern .btn-signin, .navbar-modern .btn-profile {
     background: #4caf50;
@@ -137,19 +188,19 @@ if (strpos($_SERVER['PHP_SELF'], 'Admin/') !== false) {
       <div class="collapse navbar-collapse" id="navbarNav">
         <ul class="navbar-nav ms-auto align-items-lg-center">
           <li class="nav-item">
-            <a class="nav-link" href="<?php echo $base; ?>php/Forum/community.php">Farming Community</a>
+            <a class="nav-link <?php echo isActiveLink('community.php', $current_path, $current_page) ? 'active' : ''; ?>" href="<?php echo $base; ?>php/Forum/community.php">Farming Community</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="<?php echo $base; ?>php/simulator.php">Simulation</a>
+            <a class="nav-link <?php echo isActiveLink('simulator.php', $current_path, $current_page) ? 'active' : ''; ?>" href="<?php echo $base; ?>php/simulator.php">Simulation</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="<?php echo $base; ?>php/plantinder.php">Plantinder</a>
+            <a class="nav-link <?php echo isActiveLink('plantinder.php', $current_path, $current_page) ? 'active' : ''; ?>" href="<?php echo $base; ?>php/plantinder.php">Plantinder</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="<?php echo $base; ?>php/modulepage.php">Module</a>
+            <a class="nav-link <?php echo isActiveLink('modulepage.php', $current_path, $current_page) ? 'active' : ''; ?>" href="<?php echo $base; ?>php/modulepage.php">Module</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="<?php echo $base; ?>php/userpage.php">Profile</a>
+            <a class="nav-link <?php echo isActiveLink('userpage.php', $current_path, $current_page) ? 'active' : ''; ?>" href="<?php echo $base; ?>php/userpage.php">Profile</a>
           </li>
         </ul>
       </div>
