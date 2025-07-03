@@ -1,5 +1,25 @@
 <?php
   session_start();
+  // Fetch real counts from the database
+  require_once 'php/connection.php';
+  $membersCount = 0;
+  $postsCount = 0;
+  $modulesCount = 0;
+  // Members: count active users
+  $result = mysqli_query($conn, "SELECT COUNT(*) as cnt FROM users WHERE status = 'active'");
+  if ($row = mysqli_fetch_assoc($result)) {
+    $membersCount = (int)$row['cnt'];
+  }
+  // Posts: count questions
+  $result = mysqli_query($conn, "SELECT COUNT(*) as cnt FROM questions");
+  if ($row = mysqli_fetch_assoc($result)) {
+    $postsCount = (int)$row['cnt'];
+  }
+  // Modules: count modules
+  $result = mysqli_query($conn, "SELECT COUNT(*) as cnt FROM modules");
+  if ($row = mysqli_fetch_assoc($result)) {
+    $modulesCount = (int)$row['cnt'];
+  }
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -220,9 +240,9 @@
       }
       // Example values, replace with dynamic values if available
       document.addEventListener('DOMContentLoaded', function() {
-        animateCounter('membersCounter', 120, 1200);
-        animateCounter('postsCounter', 350, 1200);
-        animateCounter('modulesCounter', 6, 1200);
+        animateCounter('membersCounter', <?php echo $membersCount; ?>, 1200);
+        animateCounter('postsCounter', <?php echo $postsCount; ?>, 1200);
+        animateCounter('modulesCounter', <?php echo $modulesCount; ?>, 1200);
       });
 
       // Scroll to section
