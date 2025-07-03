@@ -92,8 +92,7 @@
             
             if($conn->query($sql) === TRUE){
                 $message = "<div class='alert alert-success'>Module updated successfully!</div>";
-                // Redirect after a short delay
-                echo "<script>setTimeout(function(){ window.location.href='adminpage.php#module-management'; }, 1500);</script>";
+                // No redirect; stay on the edit page and show the success message
             }
             else{
                 $message = "<div class='alert alert-danger'>Update Failed: " . mysqli_error($conn) . "</div>";
