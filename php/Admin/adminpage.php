@@ -115,6 +115,10 @@ include('../connection.php');
             align-items: center;
             gap: 0.4rem;
         }
+        .btn-sm {
+            font-size: 0.875rem;
+            padding: 0.25rem 0.5rem;
+        }
         .form-control {
             border-radius: 8px;
         }
@@ -258,6 +262,7 @@ include('../connection.php');
                         <th>Role</th>
                         <th>Date Created</th>
                         <th>Status</th>
+                        <th>Actions</th>
                     </tr>
                 </thead>
                 <tbody id="userTable">
@@ -281,6 +286,14 @@ include('../connection.php');
                                 <option value='inactive'" . ($row['status'] == 'inactive' ? ' selected' : '') . ">Inactive</option>
                             </select>
                         </td>";
+                        echo "<td>";
+                        // Don't show delete button for the current admin user
+                        if ($row['user_id'] != $_SESSION['user_id']) {
+                            echo "<a href='deleteuser.php?id=" . $row['user_id'] . "' class='btn btn-sm btn-danger' onclick='return confirmDelete(\"" . htmlspecialchars($row['username']) . "\", " . $row['user_id'] . ")'><i class='bi bi-trash'></i>Delete</a>";
+                        } else {
+                            echo "<span class='text-muted'>Current User</span>";
+                        }
+                        echo "</td>";
                     }
                     ?>
                 </tbody>
@@ -321,7 +334,21 @@ include('../connection.php');
                         echo "<td>" . htmlspecialchars($row['type']) . "</td>";
                         echo "<td>" . htmlspecialchars($row['category']) . "</td>";
                         echo "<td>" . htmlspecialchars($row['content']) . "</td>";
-                        echo "<td>" . htmlspecialchars($row['image_path']) . "</td>";
+                        // Display image preview in admin table
+                        $image_path = $row['image_path'];
+                        if (filter_var($image_path, FILTER_VALIDATE_URL)) {
+                            // External URL
+                            echo "<td>
+                                    <img src='" . htmlspecialchars($image_path) . "' alt='Module Image' style='width: 50px; height: 50px; object-fit: cover; border-radius: 5px;' onerror='this.style.display=\"none\"; this.nextElementSibling.style.display=\"block\";'>
+                                    <span style='display: none; font-size: 0.8em; color: #666;'>External URL</span>
+                                  </td>";
+                        } else {
+                            // Local file
+                            echo "<td>
+                                    <img src='../../" . htmlspecialchars($image_path) . "' alt='Module Image' style='width: 50px; height: 50px; object-fit: cover; border-radius: 5px;' onerror='this.style.display=\"none\"; this.nextElementSibling.style.display=\"block\";'>
+                                    <span style='display: none; font-size: 0.8em; color: #666;'>Local File</span>
+                                  </td>";
+                        }
                         echo "<td>" . htmlspecialchars($row['created_at']) . "</td>";
                         echo "<td>" . htmlspecialchars($row['updated_at']) . "</td>";
                         echo "<td>
@@ -625,6 +652,15 @@ include('../connection.php');
             })
             .catch(error => showToast('Error: ' + error, 'danger'));
         }
+        // Confirmation dialog for user deletion
+        function confirmDelete(username, userId) {
+            if (confirm('Are you sure you want to delete user "' + username + '"?\n\nThis action will permanently delete:\n• User account\n• All user questions and replies\n• All user favorites\n\nThis action cannot be undone.')) {
+                window.location.href = 'deleteuser.php?id=' + userId;
+                return true;
+            }
+            return false;
+        }
+        
         // Toast function
         function showToast(message, type) {
             var toastContainer = document.getElementById('toast-container');

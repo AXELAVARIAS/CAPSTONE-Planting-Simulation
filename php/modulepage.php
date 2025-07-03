@@ -190,7 +190,15 @@
                 while ($row = $result->fetch_assoc()) {
                     echo '<div class="col-md-6 col-lg-4" data-aos="fade-up">';
                     echo '<div class="card module-card h-100">';
-                    echo '<img src="' . htmlspecialchars($row['image_path']) . '" class="module-card-img card-img-top" alt="' . htmlspecialchars($row['title']) . '">';
+                    // Handle image display for both local files and external URLs
+                    $image_path = $row['image_path'];
+                    if (filter_var($image_path, FILTER_VALIDATE_URL)) {
+                        // External URL - use directly
+                        echo '<img src="' . htmlspecialchars($image_path) . '" class="module-card-img card-img-top" alt="' . htmlspecialchars($row['title']) . '" onerror="this.src=\'../images/default-module.jpg\'; this.onerror=null;">';
+                    } else {
+                        // Local file - add proper path
+                        echo '<img src="' . htmlspecialchars($image_path) . '" class="module-card-img card-img-top" alt="' . htmlspecialchars($row['title']) . '" onerror="this.src=\'../images/default-module.jpg\'; this.onerror=null;">';
+                    }
                     echo '<div class="card-body d-flex flex-column">';
                     echo '<div class="mb-2">';
                     echo '<span class="badge badge-type">' . htmlspecialchars($row['type']) . '</span>';

@@ -35,7 +35,7 @@
 </head>
 <body>
 <?php include 'php/navbar.php'; ?>
-    <section class="container-fluid hero-bg d-flex flex-column justify-content-start align-items-center position-relative" style="padding-top: 30px; min-height: 40vh;">
+    <section class="container-fluid hero-bg d-flex flex-column justify-content-start align-items-center position-relative" style="padding-top: 60px; min-height: 40vh;">
         <div class="text-center text-white d-flex flex-column justify-content-center align-items-center" style="z-index:2;">
           <h1 class="slide-in mb-3">Welcome to Teen-Anim</h1>
           <p class="lead my-2 fs-3" data-aos="fade-up">Empowering the next generation of farmers</p>
@@ -44,7 +44,7 @@
               <a href="php/signup.php" class="btn btn-lg btn-warning px-5 py-2" data-aos="zoom-in" data-aos-delay="200">Get Started</a>
           <?php endif; ?>
         </div>
-        <svg class="wave" viewBox="0 0 1440 320"><path fill="#fff" fill-opacity="1" d="M0,224L48,197.3C96,171,192,117,288,117.3C384,117,480,171,576,197.3C672,224,768,224,864,197.3C960,171,1056,117,1152,128C1248,139,1344,213,1392,250.7L1440,288L1440,320L1392,320C1344,320,1248,320,1152,320C1056,320,960,320,864,320C768,320,672,320,576,320C480,320,384,320,288,320C192,320,96,320,48,320L0,320Z"></path></svg>
+        
     </section>
     <section class="container py-5">
       <div class="row g-4">
