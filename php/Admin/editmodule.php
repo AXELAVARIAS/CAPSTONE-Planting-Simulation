@@ -349,7 +349,7 @@
                             <?php if (!empty($content) && !filter_var($content, FILTER_VALIDATE_URL)): ?>
                                 <div class="current-image-info mt-2">
                                     <p class="mb-2"><strong>Current Content File:</strong></p>
-                                    <a href="<?php echo htmlspecialchars($content); ?>" target="_blank">View Current File</a>
+                                    <span class="text-muted small">A file is already uploaded for this module.</span>
                                 </div>
                             <?php endif; ?>
                             <p class="text-muted small mt-2">
@@ -396,7 +396,7 @@
                             </div>
                         <?php endif; ?>
                         <div class="image-input-tabs">
-                            <button type="button" class="image-input-tab active" onclick="switchImageInput('upload')">Upload File</button>
+                            <button type="button" class="image-input-tab active" onclick="switchImageInput('upload')">Upload Image</button>
                             <button type="button" class="image-input-tab" onclick="switchImageInput('url')">Use URL</button>
                         </div>
                         <div id="upload-content" class="image-input-content active">
