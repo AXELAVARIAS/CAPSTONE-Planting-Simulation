@@ -163,6 +163,26 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_SESSION['user_id'])) {
             font-weight: 600;
             margin-bottom: 1rem;
         }
+        .replies-container {
+            max-height: 400px;
+            overflow-y: auto;
+            margin-bottom: 2rem;
+            padding-right: 10px;
+        }
+        .replies-container::-webkit-scrollbar {
+            width: 8px;
+        }
+        .replies-container::-webkit-scrollbar-track {
+            background: #f1f1f1;
+            border-radius: 10px;
+        }
+        .replies-container::-webkit-scrollbar-thumb {
+            background: #43a047;
+            border-radius: 10px;
+        }
+        .replies-container::-webkit-scrollbar-thumb:hover {
+            background: #388e3c;
+        }
         .post-reply-card {
             border-radius: 1rem;
             box-shadow: 0 2px 12px rgba(76,175,80,0.08);
@@ -255,32 +275,34 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_SESSION['user_id'])) {
             <?= $reply_total ?> <?= $reply_total === 1 ? 'Reply' : 'Replies' ?>
         </div>
 
-        <?php if ($reply_total > 0): ?>
-            <?php while ($reply = $replies->fetch_assoc()): ?>
-                <div class="reply-card-container">
-                  <div class="reply-card">
-                    <div class="reply-avatar">
-                      <img src="<?= !empty($reply['profile_picture']) ? '../../images/profile_pics/' . htmlspecialchars($reply['profile_picture']) : '../../images/clearteenalogo.png' ?>" alt="User Avatar" style="width:100%;height:100%;object-fit:cover;border-radius:50%;" onerror="this.onerror=null;this.src='../../images/clearteenalogo.png';">
-                    </div>
-                    <div class="reply-content">
-                      <div class="reply-meta">Replied by <?= htmlspecialchars($reply['username']) ?> on <?= date('M d, Y', strtotime($reply['created_at'])) ?></div>
-                      <div class="reply-text">
-                        <?= htmlspecialchars($reply['body']) ?>
+        <div class="replies-container">
+            <?php if ($reply_total > 0): ?>
+                <?php while ($reply = $replies->fetch_assoc()): ?>
+                    <div class="reply-card-container">
+                      <div class="reply-card">
+                        <div class="reply-avatar">
+                          <img src="<?= !empty($reply['profile_picture']) ? '../../images/profile_pics/' . htmlspecialchars($reply['profile_picture']) : '../../images/clearteenalogo.png' ?>" alt="User Avatar" style="width:100%;height:100%;object-fit:cover;border-radius:50%;" onerror="this.onerror=null;this.src='../../images/clearteenalogo.png';">
+                        </div>
+                        <div class="reply-content">
+                          <div class="reply-meta">Replied by <?= htmlspecialchars($reply['username']) ?> on <?= date('M d, Y', strtotime($reply['created_at'])) ?></div>
+                          <div class="reply-text">
+                            <?= htmlspecialchars($reply['body']) ?>
+                          </div>
+                        </div>
+                        <?php if ($_SESSION['role'] === 'agriculturist'): ?>
+                            <a href="delete.php?type=reply&id=<?= $reply['reply_id'] ?>" 
+                            class="reply-delete"
+                            onclick="return confirm('Are you sure you want to delete this reply?');">
+                                <i class="bi bi-x"></i>
+                            </a>
+                        <?php endif; ?>
                       </div>
                     </div>
-                    <?php if ($_SESSION['role'] === 'agriculturist'): ?>
-                        <a href="delete.php?type=reply&id=<?= $reply['reply_id'] ?>" 
-                        class="reply-delete"
-                        onclick="return confirm('Are you sure you want to delete this reply?');">
-                            <i class="bi bi-x"></i>
-                        </a>
-                    <?php endif; ?>
-                  </div>
-                </div>
-            <?php endwhile; ?>
-        <?php else: ?>
-            <div class="text-muted mb-4">No replies yet. Be the first to reply!</div>
-        <?php endif; ?>
+                <?php endwhile; ?>
+            <?php else: ?>
+                <div class="text-muted mb-4">No replies yet. Be the first to reply!</div>
+            <?php endif; ?>
+        </div>
 
         <?php if (isset($_SESSION['user_id'])): ?>
             <div class="post-reply-card">

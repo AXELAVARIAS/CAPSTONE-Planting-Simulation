@@ -58,6 +58,8 @@
       box-shadow: 0 4px 24px rgba(76,175,80,0.10);
       margin-bottom: 2rem;
       overflow: hidden;
+      min-height: 700px;
+      max-height: 1000px;
     }
     .discussion-form-card .card-header {
       background: #388e3c;
@@ -71,10 +73,37 @@
       font-weight: 600;
       padding: 0.5rem 2rem;
     }
+    .discussion-form-card .form-control {
+      font-size: 1.2rem;
+      min-height: 3rem;
+    }
+    .discussion-form-card textarea.form-control {
+      min-height: 200px;
+    }
     .discussion-list-card {
       border-radius: 1rem;
       box-shadow: 0 4px 24px rgba(76,175,80,0.10);
       overflow: hidden;
+      min-height:700px;
+      max-height: 900px;
+    }
+    .discussion-list-card .list-group {
+      max-height: 400px;
+      overflow-y: auto;
+    }
+    .discussion-list-card .list-group::-webkit-scrollbar {
+      width: 8px;
+    }
+    .discussion-list-card .list-group::-webkit-scrollbar-track {
+      background: #f1f1f1;
+      border-radius: 10px;
+    }
+    .discussion-list-card .list-group::-webkit-scrollbar-thumb {
+      background: #43a047;
+      border-radius: 10px;
+    }
+    .discussion-list-card .list-group::-webkit-scrollbar-thumb:hover {
+      background: #388e3c;
     }
     .discussion-list-card .card-header {
       background: #18804b;
@@ -157,8 +186,8 @@
       <p class="mb-0">Connect, share, and grow with fellow young farmers. Start a new discussion or join the conversation!</p>
     </div>
     <div class="row justify-content-center g-4">
-      <div class="col-12 col-lg-5">
-        <div class="card discussion-form-card mb-4 mb-lg-0" data-aos="fade-up">
+      <div class="col-12 col-lg-7">
+        <div class="card discussion-form-card mb-5 mb-lg-0" data-aos="fade-up">
           <div class="card-header">
             <i class="bi bi-chat-dots me-2"></i>Start a New Discussion
           </div>
@@ -177,7 +206,7 @@
           </div>
         </div>
       </div>
-      <div class="col-12 col-lg-7">
+      <div class="col-12 col-lg-4">
         <div class="card discussion-list-card" data-aos="fade-up" data-aos-delay="100">
           <div class="card-header">
             <i class="bi bi-clock-history me-2"></i>Recent Discussions
