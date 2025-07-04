@@ -9,7 +9,7 @@
   
   include "../connection.php"; 
 
-  $sql = "SELECT q.question_id, q.title, q.body, q.created_at, u.username 
+  $sql = "SELECT q.question_id, q.title, q.body, q.created_at, u.username, u.profile_picture 
           FROM questions q
           JOIN users u ON q.user_id = u.user_id
           ORDER BY q.created_at DESC
@@ -220,7 +220,8 @@
                                 <?= htmlspecialchars($row['title']) ?>
                             </a>
                             <div class="discussion-meta">
-                              <i class="bi bi-person-circle"></i> <?= htmlspecialchars($row['username']) ?>
+                              <img src="<?= !empty($row['profile_picture']) ? '../../images/profile_pics/' . htmlspecialchars($row['profile_picture']) : '../../images/clearteenalogo.png' ?>" alt="User Avatar" style="width:24px;height:24px;object-fit:cover;border-radius:50%;margin-right:4px;" onerror="this.onerror=null;this.src='../../images/clearteenalogo.png'">
+                              <span><?= htmlspecialchars($row['username']) ?></span>
                               <i class="bi bi-calendar-event ms-2"></i> <?= date('M d, Y', strtotime($row['created_at'])) ?>
                             </div>
                         </div>
