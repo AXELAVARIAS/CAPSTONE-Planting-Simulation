@@ -155,6 +155,59 @@ function isActiveLink($link_path, $current_path, $current_page) {
       padding: 1rem 0;
     }
   }
+  .navbar-modern .navbar-nav {
+    justify-content: center !important;
+    width: 100%;
+  }
+  .profile-dropdown-topright {
+    position: fixed;
+    top: 200px;
+    right: 40px;
+    z-index: 2000;
+  }
+  .custom-profile-dropdown {
+    min-width: 320px;
+    top: 2px !important;
+    right: 0 !important;
+    left: auto !important;
+    position: absolute !important;
+    z-index: 2001;
+    border-radius: 1.2rem;
+    margin-top: 0 !important;
+    background: #fff;
+    color: #388e3c;
+    padding-top: 0.5rem;
+    padding-bottom: 0.5rem;
+    border: solid 3px #4caf50;
+  }
+  .custom-profile-dropdown .dropdown-header {
+    padding: 1rem 1rem 0.5rem 1rem;
+    background: transparent;
+    color: #388e3c;
+  }
+  .custom-profile-dropdown .dropdown-item {
+    color: #388e3c;
+    border-radius: 0.7rem;
+    margin: 0 0.5rem;
+    padding: 0.6rem 1rem;
+    transition: background 0.2s, color 0.2s, padding 0.2s, font-size 0.2s, transform 0.2s;
+    font-weight: 500;
+  }
+  .custom-profile-dropdown .dropdown-item:hover {
+    background: #e8f5e9;
+    color: #256029;
+    padding: 0.9rem 1.3rem;
+    font-size: 1.12rem;
+    transform: scale(0.90);
+  }
+  .custom-profile-dropdown .dropdown-divider {
+    border-top: 1px solid #c8e6c9;
+    margin: 0.3rem 0;
+  }
+  /* Remove Bootstrap dropdown arrow/caret for profile dropdown */
+  #profileDropdownTop::after {
+    display: none !important;
+  }
 </style>
 <nav class="navbar navbar-expand-lg fixed-top navbar-modern w-100">
   <div class="container-fluid">
@@ -186,7 +239,7 @@ function isActiveLink($link_path, $current_path, $current_page) {
         <span class="navbar-toggler-icon"></span>
       </button>
       <div class="collapse navbar-collapse" id="navbarNav">
-        <ul class="navbar-nav ms-auto align-items-lg-center">
+        <ul class="navbar-nav justify-content-center w-100 align-items-lg-center">
           <li class="nav-item">
             <a class="nav-link <?php echo isActiveLink('community.php', $current_path, $current_page) ? 'active' : ''; ?>" href="<?php echo $base; ?>php/Forum/community.php">Farming Community</a>
           </li>
@@ -199,11 +252,48 @@ function isActiveLink($link_path, $current_path, $current_page) {
           <li class="nav-item">
             <a class="nav-link <?php echo isActiveLink('modulepage.php', $current_path, $current_page) ? 'active' : ''; ?>" href="<?php echo $base; ?>php/modulepage.php">Module</a>
           </li>
-          <li class="nav-item">
-            <a class="nav-link <?php echo isActiveLink('userpage.php', $current_path, $current_page) ? 'active' : ''; ?>" href="<?php echo $base; ?>php/userpage.php">Profile</a>
-          </li>
         </ul>
       </div>
     <?php endif; ?>
   </div>
-</nav> 
+</nav>
+<?php if (isset($_SESSION['logged_in']) && $_SESSION['logged_in'] === true): ?>
+  <?php
+    include_once dirname(__FILE__) . '/connection.php';
+    $user_id = $_SESSION['user_id'];
+    $profile_pic = '';
+    $user_name = '';
+    $sql = "SELECT name, profile_picture FROM users WHERE user_id = ?";
+    if ($stmt = $conn->prepare($sql)) {
+      $stmt->bind_param("i", $user_id);
+      $stmt->execute();
+      $stmt->bind_result($name, $profile_picture);
+      if ($stmt->fetch()) {
+        $user_name = htmlspecialchars($name);
+        $profile_pic = !empty($profile_picture) ? $base . "images/profile_pics/" . htmlspecialchars($profile_picture) : $base . "images/clearteenalogo.png";
+      } else {
+        $profile_pic = $base . "images/clearteenalogo.png";
+      }
+      $stmt->close();
+    } else {
+      $profile_pic = $base . "images/clearteenalogo.png";
+    }
+  ?>
+  <div class="profile-dropdown-topright position-fixed" style="top: 20px; right: 40px; z-index: 2000;">
+    <div class="dropdown">
+      <a class="btn btn-profile d-flex align-items-center p-0" href="#" id="profileDropdownTop" role="button" data-bs-toggle="dropdown" aria-expanded="false" style="background: none; border: none;">
+        <img src="<?php echo $profile_pic; ?>" alt="Profile" class="profile-pic-navbar" style="width: 44px; height: 44px; border-radius: 50%; object-fit: cover; border: 2px solid #4caf50; background: #fff;">
+      </a>
+      <ul class="dropdown-menu dropdown-menu-end custom-profile-dropdown" aria-labelledby="profileDropdownTop">
+        <li class="dropdown-header text-center">
+          <img src="<?php echo $profile_pic; ?>" alt="Profile" style="width: 56px; height: 56px; border-radius: 50%; object-fit: cover; border: 2px solid #4caf50; background: #fff; margin-bottom: 8px;">
+          <div style="font-weight: 600;"><?php echo $user_name; ?></div>
+        </li>
+        <li><hr class="dropdown-divider"></li>
+        <li><a class="dropdown-item" href="<?php echo $base; ?>php/userpage.php">Profile</a></li>
+        <li><hr class="dropdown-divider"></li>
+        <li><a class="dropdown-item" href="<?php echo $base; ?>php/logout.php">Logout</a></li>
+      </ul>
+    </div>
+  </div>
+<?php endif; ?> 
