@@ -196,7 +196,7 @@
 <body>
 <?php include 'navbar.php'; ?>
 <div class="sidebar d-flex flex-column align-items-center">
-    <img src="<?php echo $profile_pic; ?>" class="avatar" alt="User Avatar" onerror="this.onerror=null;this.src='../images/clearteenalogo.png';">
+    <img src="<?php echo $profile_pic; ?>" class="avatar profile-picture" alt="User Avatar" onerror="this.onerror=null;this.src='../images/clearteenalogo.png';">
     <div class="username">Hi, <?php echo htmlspecialchars($user['name']); ?>!</div>
     <nav class="nav flex-column w-100 mt-4">
         <a class="nav-link <?php echo ($active_section == 'profile') ? 'active' : ''; ?>" href="?section=profile"><i class="bi bi-person-circle"></i> Profile</a>
@@ -215,7 +215,7 @@
                 </div>
                 <div class="card-body">
                     <div class="d-flex align-items-center mb-3">
-                        <img src="<?php echo $profile_pic; ?>" class="avatar me-3" alt="User Avatar" onerror="this.onerror=null;this.src='../images/clearteenalogo.png';">
+                        <img src="<?php echo $profile_pic; ?>" class="avatar me-3 profile-picture" alt="User Avatar" onerror="this.onerror=null;this.src='../images/clearteenalogo.png';">
                         <div>
                             <h4 class="mb-0"><?php echo htmlspecialchars($user['name']); ?></h4>
                             <div class="text-muted">@<?php echo htmlspecialchars($user['username']); ?></div>
