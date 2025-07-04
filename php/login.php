@@ -1,5 +1,17 @@
 <?php
 session_start();
+if (isset($_SESSION['logged_in']) && $_SESSION['logged_in'] === true) {
+    if ($_SESSION['role'] == 'admin') {
+        header("Location: Admin/adminpage.php");
+        exit();
+    } elseif ($_SESSION['role'] == 'agriculturist') {
+        header("Location: Admin/agriculturistpage.php");
+        exit();
+    } else {
+        header("Location: Admin/agriculturistpage.php");
+        exit();
+    }
+}
 $error_message = '';
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {

@@ -112,11 +112,14 @@
     <title>Edit Module</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&family=Irish+Grover&display=swap" rel="stylesheet">
     <style>
         body, html {
             height: 100%;
             margin: 0;
             overflow-x: hidden;
+            background: #e8f5e9;
+            font-family: 'Poppins', Arial, sans-serif;
         }
         .d-flex {
             min-height: 100vh;
@@ -125,15 +128,90 @@
             padding: 80px 0 20px 0;
         }
         .form-container {
-            background: #343a40;
-            border-radius: 15px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+            background: #f1fdf6;
+            border-radius: 22px;
+            box-shadow: 0 8px 32px 0 rgba(56,142,60,0.18);
+            border: 2.5px solid #43a047;
+            padding: 2.5rem 2.5rem 2rem 2.5rem;
+            max-width: 900px;
+            margin: 0 auto;
+            animation: fadeInUp 0.7s cubic-bezier(.39,.575,.565,1) both;
         }
-        .image-preview {
-            max-width: 200px;
+        @keyframes fadeInUp {
+            0% { opacity: 0; transform: translateY(30px); }
+            100% { opacity: 1; transform: none; }
+        }
+        .section-title {
+            font-family: 'Irish Grover', cursive;
+            color: #2e7d32;
+            font-size: 2.1rem;
+            font-weight: 700;
+            margin-bottom: 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.7rem;
+        }
+        .form-label {
+            color: #2e7d32;
+            font-weight: 600;
+            font-size: 1.1rem;
+        }
+        .form-control, textarea.form-control {
+            border-radius: 10px;
+            border: 1.5px solid #43a047;
+            background: #e8f5e9;
+            font-size: 1.08rem;
+            margin-bottom: 1.1rem;
+        }
+        .form-control:focus, textarea.form-control:focus {
+            border-color: #388e3c;
+            box-shadow: 0 0 0 2px #43a04733;
+        }
+        .input-tabs, .image-input-tabs {
+            display: flex;
+            margin-bottom: 15px;
+            border-radius: 7px;
+            overflow: hidden;
+            box-shadow: 0 2px 8px rgba(56,142,60,0.10);
+        }
+        .input-tab, .image-input-tab {
+            flex: 1;
+            padding: 12px 0;
+            background: #c8e6c9;
+            color: #2e7d32;
+            text-align: center;
+            cursor: pointer;
+            transition: background 0.3s, color 0.3s;
+            border: none;
+            font-weight: 600;
+            font-size: 1.08rem;
+        }
+        .input-tab.active, .image-input-tab.active {
+            background: #43a047;
+            color: #fff;
+        }
+        .input-tab:hover, .image-input-tab:hover {
+            background: #388e3c;
+            color: #fff;
+        }
+        .input-content, .image-input-content {
+            display: none;
+        }
+        .input-content.active, .image-input-content.active {
+            display: block;
+            animation: fadeIn 0.5s;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .image-preview, .content-preview {
+            max-width: 220px;
             max-height: 150px;
-            border-radius: 8px;
-            border: 2px solid #6c757d;
+            border-radius: 10px;
+            border: 2px solid #43a047;
+            margin-bottom: 0.5rem;
+            background: #e8f5e9;
         }
         .file-input-wrapper {
             position: relative;
@@ -147,65 +225,68 @@
         .file-input-label {
             display: block;
             padding: 10px 15px;
-            background: #6c757d;
-            color: white;
-            border-radius: 5px;
+            background: #388e3c;
+            color: #fff;
+            border-radius: 7px;
             cursor: pointer;
             text-align: center;
             transition: background 0.3s;
+            font-weight: 600;
         }
         .file-input-label:hover {
-            background: #5a6268;
+            background: #2e7d32;
         }
         .current-image-info {
-            background: #495057;
+            background: #c8e6c9;
             padding: 10px;
-            border-radius: 5px;
+            border-radius: 7px;
             margin-bottom: 10px;
-        }
-        .input-tabs {
-            display: flex;
-            margin-bottom: 15px;
-            border-radius: 5px;
-            overflow: hidden;
-        }
-        .input-tab {
-            flex: 1;
-            padding: 10px;
-            background: #6c757d;
-            color: white;
-            text-align: center;
-            cursor: pointer;
-            transition: background 0.3s;
-            border: none;
-        }
-        .input-tab.active {
-            background: #28a745;
-        }
-        .input-tab:hover {
-            background: #5a6268;
-        }
-        .input-tab.active:hover {
-            background: #218838;
-        }
-        .input-content {
-            display: none;
-        }
-        .input-content.active {
-            display: block;
+            color: #2e7d32;
+            font-size: 1rem;
         }
         .url-example {
-            background: #495057;
+            background: #f1fdf6;
             padding: 10px;
-            border-radius: 5px;
+            border-radius: 7px;
             margin-top: 10px;
-            font-size: 0.9em;
+            font-size: 0.98em;
+            color: #2e7d32;
         }
         .url-example code {
-            color: #ffc107;
-            background: #343a40;
+            color: #2e7d32;
+            background: #c8e6c9;
             padding: 2px 4px;
             border-radius: 3px;
+        }
+        .btn-success {
+            background: #43a047;
+            color: #fff;
+            border-radius: 50px;
+            font-weight: 600;
+            padding: 0.7rem 2.5rem;
+            font-size: 1.1rem;
+            border: none;
+            box-shadow: 0 2px 8px rgba(56,142,60,0.13);
+            transition: background 0.2s, transform 0.2s;
+        }
+        .btn-success:hover {
+            background: #2e7d32;
+            color: #fff;
+            transform: translateY(-1px);
+            box-shadow: 0 4px 8px rgba(56,142,60,0.18);
+        }
+        .btn-secondary {
+            border-radius: 50px;
+            font-weight: 600;
+            padding: 0.7rem 2.5rem;
+            font-size: 1.1rem;
+        }
+        @media (max-width: 900px) {
+            .form-container { padding: 1.2rem 0.5rem; }
+        }
+        @media (max-width: 600px) {
+            .form-container { padding: 0.5rem 0.2rem; }
+            .section-title { font-size: 1.3rem; }
         }
     </style>
 </head>
@@ -224,30 +305,30 @@
             <?php if (!empty($message)) echo $message; ?>
             
             <form action="editmodule.php?id=<?php echo $id; ?>" method="POST" enctype="multipart/form-data" class="p-5 form-container">
-                <h2 class="fs-3 mb-4 text-white"><i class="bi bi-pencil-square"></i> Edit Module Details</h2>
+                <div class="section-title mb-4"><i class="bi bi-pencil-square"></i> Edit Module Details</div>
 
                 <input type="hidden" name="id" value="<?php echo $id; ?>">
 
                 <div class="row">
                     <div class="col-md-8">
-                        <label for="title" class="form-label fw-semibold fs-5 text-white">Module Title:</label>
+                        <label for="title" class="form-label fw-semibold fs-5 ">Module Title:</label>
                         <input type="text" class="form-control mb-3" id="title" name="title" value="<?php echo htmlspecialchars($title); ?>" required>
 
-                        <label for="description" class="form-label fw-semibold fs-5 text-white">Description:</label>
+                        <label for="description" class="form-label fw-semibold fs-5 ">Description:</label>
                         <textarea class="form-control mb-3" id="description" name="description" rows="4" required><?php echo htmlspecialchars($description); ?></textarea>
 
                         <div class="row">
                             <div class="col-md-6">
-                                <label for="type" class="form-label fw-semibold fs-5 text-white">Type:</label>
+                                <label for="type" class="form-label fw-semibold fs-5 ">Type:</label>
                                 <input class="form-control mb-3" id="type" name="type" value="<?php echo htmlspecialchars($type); ?>" required>
                             </div>
                             <div class="col-md-6">
-                                <label for="category" class="form-label fw-semibold fs-5 text-white">Category:</label>
+                                <label for="category" class="form-label fw-semibold fs-5 ">Category:</label>
                                 <input class="form-control mb-3" id="category" name="category" value="<?php echo htmlspecialchars($category); ?>" required>
                             </div>
                         </div>
 
-                        <label for="content" class="form-label fw-semibold fs-5 text-white">Content Path/URL:</label>
+                        <label for="content" class="form-label fw-semibold fs-5">Content Path/URL:</label>
                         <input type="text" class="form-control mb-3" id="content" name="content" value="<?php echo htmlspecialchars($content); ?>" placeholder="https://example.com/content or ../html/modulefiles/Module1.html" required>
                         <div class="url-example">
                             <i class="bi bi-info-circle"></i> <strong>Examples:</strong><br>
@@ -258,11 +339,11 @@
                     </div>
                     
                     <div class="col-md-4">
-                        <label class="form-label fw-semibold fs-5 text-white">Module Image:</label>
+                        <label class="form-label fw-semibold fs-5">Module Image:</label>
                         
                         <?php if(!empty($current_image_path)): ?>
                             <div class="current-image-info">
-                                <p class="text-white mb-2"><strong>Current Image:</strong></p>
+                                <p class="mb-2"><strong>Current Image:</strong></p>
                                 <?php if(filter_var($current_image_path, FILTER_VALIDATE_URL)): ?>
                                     <img src="<?php echo htmlspecialchars($current_image_path); ?>" alt="Current module image" class="image-preview mb-2" onerror="this.style.display='none'; this.nextElementSibling.style.display='block';">
                                     <p class="text-muted small" style="display: none;">External URL: <?php echo htmlspecialchars($current_image_path); ?></p>
@@ -273,14 +354,12 @@
                             </div>
                         <?php endif; ?>
                         
-                        <!-- Image Input Tabs -->
-                        <div class="input-tabs">
-                            <button type="button" class="input-tab active" onclick="switchImageInput('upload')">Upload File</button>
-                            <button type="button" class="input-tab" onclick="switchImageInput('url')">Use URL</button>
+                        <div class="image-input-tabs">
+                            <button type="button" class="image-input-tab active" onclick="switchImageInput('upload')">Upload File</button>
+                            <button type="button" class="image-input-tab" onclick="switchImageInput('url')">Use URL</button>
                         </div>
                         
-                        <!-- Upload File Content -->
-                        <div id="upload-content" class="input-content active">
+                        <div id="upload-content" class="image-input-content active">
                             <div class="file-input-wrapper">
                                 <label for="module_image" class="file-input-label">
                                     <i class="bi bi-upload"></i> Choose Image File
@@ -289,7 +368,7 @@
                             </div>
                             
                             <div id="image-preview-container" class="mt-3" style="display: none;">
-                                <p class="text-white mb-2"><strong>New Image Preview:</strong></p>
+                                <p class="mb-2"><strong>New Image Preview:</strong></p>
                                 <img id="image-preview" src="" alt="Image preview" class="image-preview">
                                 <p id="file-info" class="text-muted small"></p>
                             </div>
@@ -301,12 +380,11 @@
                             </p>
                         </div>
                         
-                        <!-- URL Input Content -->
-                        <div id="url-content" class="input-content">
+                        <div id="url-content" class="image-input-content">
                             <input type="url" class="form-control mb-3" id="image_url" name="image_url" placeholder="https://example.com/image.jpg">
                             
                             <div id="url-preview-container" class="mt-3" style="display: none;">
-                                <p class="text-white mb-2"><strong>URL Image Preview:</strong></p>
+                                <p class="mb-2"><strong>URL Image Preview:</strong></p>
                                 <img id="url-preview" src="" alt="URL image preview" class="image-preview">
                                 <p id="url-info" class="text-muted small"></p>
                             </div>

@@ -15,58 +15,69 @@ include('../connection.php');
     <title>Admin Page</title>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&family=Irish+Grover&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../../css/homepage.css">
     <style>
         body {
-            margin: 0;
-            padding: 0;
-            background: #f4f6fa;
-            font-family: 'Segoe UI', Arial, sans-serif;
+            background: #f8fcf7;
+            font-family: 'Poppins', Arial, sans-serif;
         }
         .admin-header {
             width: 100%;
-            background: #23272b;
-            color: #fff;
+            background: #fff;
+            color: #388e3c;
             display: flex;
             align-items: center;
             justify-content: space-between;
             padding: 0.75rem 2rem;
             font-size: 1.2rem;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+            box-shadow: 0 2px 8px rgba(60,120,60,0.08);
             position: sticky;
             top: 0;
             z-index: 100;
+            border-bottom: 3px solid #4caf50;
         }
         .admin-header .logo {
             display: flex;
             align-items: center;
             gap: 0.75rem;
+            font-family: 'Irish Grover', cursive;
+            font-size: 1.5rem;
+            color: #388e3c;
         }
         .admin-header .logo img {
             height: 36px;
             width: 36px;
             border-radius: 8px;
+            border: 2px solid #4caf50;
+            background: #fff;
         }
         .admin-header .logout-link {
             color: #fff;
-            text-decoration: none;
+            background: #4caf50;
+            border-radius: 50px;
+            padding: 0.5rem 1.5rem;
             font-size: 1rem;
             display: flex;
             align-items: center;
             gap: 0.4rem;
-            transition: color 0.2s;
+            transition: background 0.2s, color 0.2s;
+            font-weight: 600;
+            border: none;
         }
         .admin-header .logout-link:hover {
-            color: #ffc107;
+            background: #388e3c;
+            color: #f7c35f;
         }
         .admin-nav {
-            background: #23272b;
+            background: #4caf50;
             display: flex;
             gap: 2rem;
             padding: 0.5rem 2rem 0.5rem 2rem;
-            border-bottom: 1px solid #343a40;
-            box-shadow: 0 1px 4px rgba(0,0,0,0.03);
+            border-bottom: 1px solid #388e3c;
+            box-shadow: 0 1px 4px rgba(60,120,60,0.03);
             position: sticky;
-            top: 56px; /* Height of .admin-header, adjust if needed */
+            top: 56px;
             z-index: 99;
         }
         .admin-nav .nav-link {
@@ -79,22 +90,24 @@ include('../connection.php');
             align-items: center;
             gap: 0.5rem;
             transition: background 0.2s, color 0.2s;
+            font-size: 1.08rem;
         }
         .admin-nav .nav-link.active, .admin-nav .nav-link:hover {
-            background: #343a40;
-            color: #ffc107;
+            background: #f7c35f;
+            color: #388e3c;
         }
         .content {
             padding: 2.5rem 1vw 2rem 1vw;
             max-width: 98vw;
             margin: 0 auto;
-            margin-top: 1px; /* Reduced from 110px for tighter layout */
+            margin-top: 1px;
         }
         .card {
             margin-bottom: 2rem;
-            box-shadow: 0 2px 12px rgba(0,0,0,0.06);
-            border-radius: 12px;
+            box-shadow: 0 2px 12px rgba(60,120,60,0.06);
+            border-radius: 18px;
             width: 100%;
+            background: #fff;
         }
         .content-section {
             display: none;
@@ -111,13 +124,41 @@ include('../connection.php');
             to { opacity: 1; transform: translateY(0); }
         }
         .table thead {
-            background: #23272b;
+            background: #4caf50;
             color: #fff;
         }
         .btn-dark, .btn-warning, .btn-danger {
             display: flex;
             align-items: center;
             gap: 0.4rem;
+            font-family: 'Poppins', Arial, sans-serif;
+        }
+        .btn-dark {
+            background: #388e3c;
+            color: #f7c35f;
+            border: none;
+        }
+        .btn-dark:hover {
+            background: #256029;
+            color: #fff;
+        }
+        .btn-warning {
+            background: #f7c35f;
+            color: #388e3c;
+            border: none;
+        }
+        .btn-warning:hover {
+            background: #ffe082;
+            color: #256029;
+        }
+        .btn-danger {
+            background: #e53935;
+            color: #fff;
+            border: none;
+        }
+        .btn-danger:hover {
+            background: #b71c1c;
+            color: #fff;
         }
         .btn-sm {
             font-size: 0.875rem;
@@ -125,6 +166,7 @@ include('../connection.php');
         }
         .form-control {
             border-radius: 8px;
+            font-family: 'Poppins', Arial, sans-serif;
         }
         .section-title {
             display: flex;
@@ -133,6 +175,8 @@ include('../connection.php');
             font-weight: 600;
             font-size: 1.5rem;
             margin-bottom: 1.2rem;
+            color: #388e3c;
+            font-family: 'Irish Grover', cursive;
         }
         /* Responsive header for small screens */
         @media (max-width: 768px) {
@@ -180,9 +224,9 @@ include('../connection.php');
                 gap: 0.5rem;
                 padding: 0.5rem 1rem;
                 display: none;
-                background: #23272b;
+                background: #4caf50;
                 position: sticky;
-                top: 48px; /* Height of mobile header */
+                top: 48px;
                 z-index: 99;
             }
             .admin-nav.show {
@@ -190,7 +234,7 @@ include('../connection.php');
                 margin-top: 0.5rem;
             }
             .content {
-                margin-top: 20px; /* Reduced for mobile as well */
+                margin-top: 20px;
             }
         }
         /* Responsive nav for small screens */
@@ -200,7 +244,7 @@ include('../connection.php');
                 gap: 0.5rem;
                 padding: 0.5rem 1rem;
                 display: none;
-                background: #23272b;
+                background: #4caf50;
                 position: relative;
                 margin-top: 0;
             }
@@ -220,7 +264,7 @@ include('../connection.php');
                 justify-content: flex-start;
                 font-size: 1rem;
                 padding: 0.75rem 1rem;
-                background: #23272b;
+                background: #4caf50;
                 color: #fff;
                 border-radius: 4px;
             }
