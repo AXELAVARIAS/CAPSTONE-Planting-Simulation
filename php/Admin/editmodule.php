@@ -167,16 +167,16 @@
             border-color: #388e3c;
             box-shadow: 0 0 0 2px #43a04733;
         }
-        .input-tabs, .image-input-tabs {
+        .content-input-tabs, .image-input-tabs {
             display: flex;
             margin-bottom: 15px;
             border-radius: 7px;
             overflow: hidden;
             box-shadow: 0 2px 8px rgba(56,142,60,0.10);
         }
-        .input-tab, .image-input-tab {
+        .content-input-tab, .image-input-tab {
             flex: 1;
-            padding: 12px 0;
+            padding: 16px 0;
             background: #c8e6c9;
             color: #2e7d32;
             text-align: center;
@@ -184,15 +184,20 @@
             transition: background 0.3s, color 0.3s;
             border: none;
             font-weight: 600;
-            font-size: 1.08rem;
+            font-size: 1.15rem;
         }
-        .input-tab.active, .image-input-tab.active {
+        .content-input-tab.active, .image-input-tab.active {
             background: #43a047;
             color: #fff;
+            font-weight: bold;
         }
-        .input-tab:hover, .image-input-tab:hover {
-            background: #388e3c;
-            color: #fff;
+        .content-input-tab:not(.active), .image-input-tab:not(.active) {
+            background: #dcedc8;
+            color: #388e3c;
+        }
+        .content-input-tab:hover:not(.active), .image-input-tab:hover:not(.active) {
+            background: #a5d6a7;
+            color: #2e7d32;
         }
         .input-content, .image-input-content {
             display: none;
@@ -328,19 +333,49 @@
                             </div>
                         </div>
 
-                        <label for="content" class="form-label fw-semibold fs-5">Content Path/URL:</label>
-                        <input type="text" class="form-control mb-3" id="content" name="content" value="<?php echo htmlspecialchars($content); ?>" placeholder="https://example.com/content or ../html/modulefiles/Module1.html" required>
-                        <div class="url-example">
-                            <i class="bi bi-info-circle"></i> <strong>Examples:</strong><br>
-                            • Google Drive: <code>https://drive.google.com/file/d/YOUR_FILE_ID/view</code><br>
-                            • Local file: <code>../html/modulefiles/Module1.html</code><br>
-                            • External URL: <code>https://example.com/module-content</code>
+                        <label for="content" class="form-label fw-semibold fs-5 ">Module Content:</label>
+                        <div class="content-input-tabs mb-2">
+                            <button type="button" class="content-input-tab active" onclick="switchContentInput('upload')">Upload File</button>
+                            <button type="button" class="content-input-tab" onclick="switchContentInput('url')">Use URL</button>
+                        </div>
+                        <!-- Upload File Content -->
+                        <div id="content-upload-content" class="content-input-content active" style="display: block;">
+                            <div class="file-input-wrapper">
+                                <label for="content_file" class="file-input-label">
+                                    <i class="bi bi-upload"></i> Choose Content File
+                                </label>
+                                <input type="file" id="content_file" name="content_file" accept=".jpeg,.jpg,.png,.pdf,.doc,.docx,.ppt,.pptx">
+                            </div>
+                            <?php if (!empty($content) && !filter_var($content, FILTER_VALIDATE_URL)): ?>
+                                <div class="current-image-info mt-2">
+                                    <p class="mb-2"><strong>Current Content File:</strong></p>
+                                    <a href="<?php echo htmlspecialchars($content); ?>" target="_blank">View Current File</a>
+                                </div>
+                            <?php endif; ?>
+                            <p class="text-muted small mt-2">
+                                <i class="bi bi-info-circle"></i> Allowed: JPEG, PNG, PDF, DOC, DOCX, PPT, PPTX<br>
+                                Max size: 20MB
+                            </p>
+                        </div>
+                        <!-- URL Input Content -->
+                        <div id="content-url-content" class="content-input-content" style="display: none;">
+                            <input type="url" class="form-control mb-3" id="content_url" name="content_url" placeholder="https://example.com/content or https://drive.google.com/file/d/..." value="<?php echo filter_var($content, FILTER_VALIDATE_URL) ? htmlspecialchars($content) : ''; ?>">
+                            <?php if (!empty($content) && filter_var($content, FILTER_VALIDATE_URL)): ?>
+                                <div class="current-image-info mt-2">
+                                    <p class="mb-2"><strong>Current Content URL:</strong></p>
+                                    <a href="<?php echo htmlspecialchars($content); ?>" target="_blank"><?php echo htmlspecialchars($content); ?></a>
+                                </div>
+                            <?php endif; ?>
+                            <div class="url-example">
+                                <i class="bi bi-info-circle"></i> <strong>Examples:</strong><br>
+                                • Google Drive: <code>https://drive.google.com/file/d/YOUR_FILE_ID/view</code><br>
+                                • External URL: <code>https://example.com/module-content</code>
+                            </div>
                         </div>
                     </div>
                     
                     <div class="col-md-4">
-                        <label class="form-label fw-semibold fs-5">Module Image:</label>
-                        
+                        <label class="form-label fw-semibold fs-5 ">Module Image:</label>
                         <?php if(!empty($current_image_path)): ?>
                             <div class="current-image-info">
                                 <p class="mb-2"><strong>Current Image:</strong></p>
@@ -348,17 +383,22 @@
                                     <img src="<?php echo htmlspecialchars($current_image_path); ?>" alt="Current module image" class="image-preview mb-2" onerror="this.style.display='none'; this.nextElementSibling.style.display='block';">
                                     <p class="text-muted small" style="display: none;">External URL: <?php echo htmlspecialchars($current_image_path); ?></p>
                                 <?php else: ?>
-                                    <img src="../../<?php echo htmlspecialchars($current_image_path); ?>" alt="Current module image" class="image-preview mb-2">
+                                    <?php
+                                        $img_src = $current_image_path;
+                                        if (!filter_var($current_image_path, FILTER_VALIDATE_URL)) {
+                                            $img_src = preg_replace('/^(\.\.\/)+/', '', $current_image_path);
+                                            $img_src = '/' . $img_src;
+                                        }
+                                    ?>
+                                    <img src="<?php echo htmlspecialchars($img_src); ?>" alt="Current module image" class="image-preview mb-2">
                                     <p class="text-muted small"><?php echo basename($current_image_path); ?></p>
                                 <?php endif; ?>
                             </div>
                         <?php endif; ?>
-                        
                         <div class="image-input-tabs">
                             <button type="button" class="image-input-tab active" onclick="switchImageInput('upload')">Upload File</button>
                             <button type="button" class="image-input-tab" onclick="switchImageInput('url')">Use URL</button>
                         </div>
-                        
                         <div id="upload-content" class="image-input-content active">
                             <div class="file-input-wrapper">
                                 <label for="module_image" class="file-input-label">
@@ -366,29 +406,24 @@
                                 </label>
                                 <input type="file" id="module_image" name="module_image" accept="image/*">
                             </div>
-                            
                             <div id="image-preview-container" class="mt-3" style="display: none;">
                                 <p class="mb-2"><strong>New Image Preview:</strong></p>
                                 <img id="image-preview" src="" alt="Image preview" class="image-preview">
                                 <p id="file-info" class="text-muted small"></p>
                             </div>
-                            
                             <p class="text-muted small mt-2">
                                 <i class="bi bi-info-circle"></i> 
                                 Supported formats: JPG, PNG, GIF, AVIF, WebP<br>
                                 Maximum size: 5MB
                             </p>
                         </div>
-                        
                         <div id="url-content" class="image-input-content">
-                            <input type="url" class="form-control mb-3" id="image_url" name="image_url" placeholder="https://example.com/image.jpg">
-                            
+                            <input type="url" class="form-control mb-3" id="image_url" name="image_url" placeholder="https://example.com/image.jpg" value="<?php echo filter_var($current_image_path, FILTER_VALIDATE_URL) ? htmlspecialchars($current_image_path) : ''; ?>">
                             <div id="url-preview-container" class="mt-3" style="display: none;">
                                 <p class="mb-2"><strong>URL Image Preview:</strong></p>
                                 <img id="url-preview" src="" alt="URL image preview" class="image-preview">
                                 <p id="url-info" class="text-muted small"></p>
                             </div>
-                            
                             <div class="url-example">
                                 <i class="bi bi-info-circle"></i> <strong>Examples:</strong><br>
                                 • Google Drive: <code>https://drive.google.com/uc?export=view&id=YOUR_FILE_ID</code><br>
@@ -412,34 +447,51 @@
     </div>
 
     <script>
-        // Switch between upload and URL input
+        // Switch between upload and URL input for image
         function switchImageInput(type) {
-            // Update tab buttons
-            document.querySelectorAll('.input-tab').forEach(tab => tab.classList.remove('active'));
-            event.target.classList.add('active');
-            
-            // Update content visibility
-            document.querySelectorAll('.input-content').forEach(content => content.classList.remove('active'));
+            const tabs = document.querySelectorAll('.image-input-tab');
+            tabs.forEach(tab => tab.classList.remove('active'));
             if (type === 'upload') {
+                tabs[0].classList.add('active');
                 document.getElementById('upload-content').classList.add('active');
+                document.getElementById('upload-content').style.display = 'block';
+                document.getElementById('url-content').classList.remove('active');
+                document.getElementById('url-content').style.display = 'none';
             } else {
+                tabs[1].classList.add('active');
+                document.getElementById('upload-content').classList.remove('active');
+                document.getElementById('upload-content').style.display = 'none';
                 document.getElementById('url-content').classList.add('active');
+                document.getElementById('url-content').style.display = 'block';
             }
         }
-        
+        // Switch between upload and URL input for content
+        function switchContentInput(type) {
+            const tabs = document.querySelectorAll('.content-input-tab');
+            tabs.forEach(tab => tab.classList.remove('active'));
+            if (type === 'upload') {
+                tabs[0].classList.add('active');
+                document.getElementById('content-upload-content').classList.add('active');
+                document.getElementById('content-upload-content').style.display = 'block';
+                document.getElementById('content-url-content').classList.remove('active');
+                document.getElementById('content-url-content').style.display = 'none';
+            } else {
+                tabs[1].classList.add('active');
+                document.getElementById('content-upload-content').classList.remove('active');
+                document.getElementById('content-upload-content').style.display = 'none';
+                document.getElementById('content-url-content').classList.add('active');
+                document.getElementById('content-url-content').style.display = 'block';
+            }
+        }
         // Image preview functionality for file upload
         document.getElementById('module_image').addEventListener('change', function(e) {
             const file = e.target.files[0];
             const previewContainer = document.getElementById('image-preview-container');
             const preview = document.getElementById('image-preview');
             const fileInfo = document.getElementById('file-info');
-            
             if (file) {
-                // Show file info
                 const fileSize = (file.size / 1024 / 1024).toFixed(2);
                 fileInfo.textContent = `${file.name} (${fileSize} MB)`;
-                
-                // Show preview
                 const reader = new FileReader();
                 reader.onload = function(e) {
                     preview.src = e.target.result;
@@ -450,20 +502,16 @@
                 previewContainer.style.display = 'none';
             }
         });
-        
         // URL preview functionality
         document.getElementById('image_url').addEventListener('input', function(e) {
             const url = e.target.value;
             const previewContainer = document.getElementById('url-preview-container');
             const preview = document.getElementById('url-preview');
             const urlInfo = document.getElementById('url-info');
-            
             if (url && isValidUrl(url)) {
                 urlInfo.textContent = `URL: ${url}`;
                 preview.src = url;
                 previewContainer.style.display = 'block';
-                
-                // Handle image load error
                 preview.onerror = function() {
                     urlInfo.textContent = `URL: ${url} (Image not accessible)`;
                     preview.style.display = 'none';
@@ -475,8 +523,6 @@
                 previewContainer.style.display = 'none';
             }
         });
-        
-        // URL validation function
         function isValidUrl(string) {
             try {
                 new URL(string);
