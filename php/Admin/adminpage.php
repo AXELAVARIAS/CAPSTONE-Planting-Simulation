@@ -65,6 +65,9 @@ include('../connection.php');
             padding: 0.5rem 2rem 0.5rem 2rem;
             border-bottom: 1px solid #343a40;
             box-shadow: 0 1px 4px rgba(0,0,0,0.03);
+            position: sticky;
+            top: 56px; /* Height of .admin-header, adjust if needed */
+            z-index: 99;
         }
         .admin-nav .nav-link {
             color: #fff;
@@ -85,6 +88,7 @@ include('../connection.php');
             padding: 2.5rem 1vw 2rem 1vw;
             max-width: 98vw;
             margin: 0 auto;
+            margin-top: 1px; /* Reduced from 110px for tighter layout */
         }
         .card {
             margin-bottom: 2rem;
@@ -171,6 +175,23 @@ include('../connection.php');
                 display: block;
                 margin: 0;
             }
+            .admin-nav {
+                flex-direction: column;
+                gap: 0.5rem;
+                padding: 0.5rem 1rem;
+                display: none;
+                background: #23272b;
+                position: sticky;
+                top: 48px; /* Height of mobile header */
+                z-index: 99;
+            }
+            .admin-nav.show {
+                display: flex;
+                margin-top: 0.5rem;
+            }
+            .content {
+                margin-top: 20px; /* Reduced for mobile as well */
+            }
         }
         /* Responsive nav for small screens */
         @media (max-width: 768px) {
@@ -210,7 +231,7 @@ include('../connection.php');
             }
             .admin-nav {
                 display: flex !important;
-                position: static;
+                position: sticky;
                 margin-top: 0;
             }
         }
@@ -630,8 +651,19 @@ include('../connection.php');
             element.classList.add('active');
         }
         window.onload = function() {
-            showSection('user-management');
-            setActiveNav(document.getElementById('nav-user'));
+            // Check if there's a hash in the URL to determine which section to show
+            var hash = window.location.hash.substring(1);
+            if (hash && document.getElementById(hash)) {
+                showSection(hash);
+                // Set the corresponding nav link as active
+                var navId = 'nav-' + hash.replace('-management', '');
+                if (document.getElementById(navId)) {
+                    setActiveNav(document.getElementById(navId));
+                }
+            } else {
+                showSection('user-management');
+                setActiveNav(document.getElementById('nav-user'));
+            }
         };
         function updateStatus1(select, suggestionId) {
             var newStatus = select.value;
@@ -688,6 +720,18 @@ include('../connection.php');
         document.getElementById('adminNavToggle').addEventListener('click', function() {
             var nav = document.getElementById('adminNav');
             nav.classList.toggle('show');
+        });
+        
+        // Handle hash changes (for browser back/forward buttons)
+        window.addEventListener('hashchange', function() {
+            var hash = window.location.hash.substring(1);
+            if (hash && document.getElementById(hash)) {
+                showSection(hash);
+                var navId = 'nav-' + hash.replace('-management', '');
+                if (document.getElementById(navId)) {
+                    setActiveNav(document.getElementById(navId));
+                }
+            }
         });
     </script>
 </body>

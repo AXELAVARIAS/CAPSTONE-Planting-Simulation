@@ -129,12 +129,14 @@ function isActiveLink($link_path, $current_path, $current_page) {
     padding: 0.5rem 1.5rem;
     font-weight: 600;
     border: none;
-    transition: background 0.2s, color 0.2s;
+    transition: all 0.3s ease;
     box-shadow: 0 2px 8px rgba(76,175,80,0.08);
   }
   .navbar-modern .btn-signin:hover, .navbar-modern .btn-profile:hover {
     background: #388e3c;
     color: #fff;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 16px rgba(76,175,80,0.2);
   }
   .navbar-toggler {
     border: none;
@@ -207,6 +209,40 @@ function isActiveLink($link_path, $current_path, $current_page) {
   /* Remove Bootstrap dropdown arrow/caret for profile dropdown */
   #profileDropdownTop::after {
     display: none !important;
+  }
+  
+  /* Profile picture hover effects */
+  .profile-pic-navbar {
+    transition: all 0.3s ease;
+    cursor: pointer;
+  }
+  
+  .profile-pic-navbar:hover {
+    transform: scale(1.1);
+    border-color: #256029 !important;
+    box-shadow: 0 4px 16px rgba(76, 175, 80, 0.3);
+  }
+  
+  /* Profile dropdown button hover effects */
+  #profileDropdownTop {
+    transition: all 0.3s ease;
+    border-radius: 50%;
+    padding: 4px;
+  }
+  
+  #profileDropdownTop:hover {
+    background: rgba(76, 175, 80, 0.1) !important;
+    transform: scale(1.05);
+  }
+  
+  /* Profile dropdown header image hover */
+  .custom-profile-dropdown .dropdown-header img {
+    transition: all 0.3s ease;
+  }
+  
+  .custom-profile-dropdown .dropdown-header:hover img {
+    transform: scale(1.05);
+    border-color: #256029;
   }
 </style>
 <nav class="navbar navbar-expand-lg fixed-top navbar-modern w-100">
