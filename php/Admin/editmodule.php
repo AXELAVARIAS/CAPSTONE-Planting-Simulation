@@ -17,6 +17,7 @@
             $type = $row['type'];
             $category = $row['category'];
             $content = $row['content'];
+            $current_content = $row['content'];
             $image_path = $row['image_path'];
             $current_image_path = $row['image_path'];
         }
@@ -31,8 +32,52 @@
         $description = mysqli_real_escape_string($conn, $_POST['description']);
         $type = mysqli_real_escape_string($conn, $_POST['type']);
         $category = mysqli_real_escape_string($conn, $_POST['category']);
-        $content = mysqli_real_escape_string($conn, $_POST['content']);
         $id = $_POST['id'];
+
+        // Handle content input (file upload or URL)
+        $content = $current_content; // Keep current content by default
+        
+        // Check if user provided a content URL
+        if(!empty($_POST['content_url']) && filter_var($_POST['content_url'], FILTER_VALIDATE_URL)) {
+            $content = $_POST['content_url'];
+        }
+        // Check if user uploaded a content file
+        elseif(isset($_FILES['content_file']) && $_FILES['content_file']['error'] == 0) {
+            $allowed_types = ['application/pdf', 'application/msword', 'application/vnd.openxmlformats-officedocument.wordprocessingml.document', 'application/vnd.ms-powerpoint', 'application/vnd.openxmlformats-officedocument.presentationml.presentation', 'image/jpeg', 'image/jpg', 'image/png'];
+            $file_type = $_FILES['content_file']['type'];
+            $file_size = $_FILES['content_file']['size'];
+            $file_name = $_FILES['content_file']['name'];
+            
+            // Validate file type
+            if(!in_array($file_type, $allowed_types)) {
+                $message = "<div class='alert alert-danger'>Invalid file type. Only PDF, DOC, DOCX, PPT, PPTX, JPG, and PNG files are allowed.</div>";
+            }
+            // Validate file size (20MB limit)
+            elseif($file_size > 20 * 1024 * 1024) {
+                $message = "<div class='alert alert-danger'>File size too large. Maximum size is 20MB.</div>";
+            }
+            else {
+                // Generate unique filename
+                $file_extension = pathinfo($file_name, PATHINFO_EXTENSION);
+                $new_filename = 'module_content_' . time() . '_' . rand(1000, 9999) . '.' . $file_extension;
+                $upload_path = '../../html/modulefiles/' . $new_filename;
+                
+                // Upload file
+                if(move_uploaded_file($_FILES['content_file']['tmp_name'], $upload_path)) {
+                    $content = '../html/modulefiles/' . $new_filename;
+                    
+                    // Delete old content file if it exists and is different
+                    if(!empty($current_content) && $current_content != $content && !filter_var($current_content, FILTER_VALIDATE_URL)) {
+                        $old_file_path = '../../' . $current_content;
+                        if(file_exists($old_file_path)) {
+                            unlink($old_file_path);
+                        }
+                    }
+                } else {
+                    $message = "<div class='alert alert-danger'>Failed to upload content file. Please try again.</div>";
+                }
+            }
+        }
 
         // Handle image input (file upload or URL)
         $image_path = $current_image_path; // Keep current image by default
@@ -87,7 +132,7 @@
             }
         }
 
-        if(!empty($title) && !empty($description) && !empty($content) && !empty($type) && !empty($category) && empty($message)){
+        if(!empty($title) && !empty($description) && !empty($type) && !empty($category) && empty($message)){
             $sql = "UPDATE modules SET title='$title', description='$description', content='$content', type='$type', category='$category', image_path='$image_path', updated_at=CURRENT_TIMESTAMP WHERE module_id='$id'";
             
             if($conn->query($sql) === TRUE){
