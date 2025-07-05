@@ -58,7 +58,7 @@
       box-shadow: 0 4px 24px rgba(76,175,80,0.10);
       margin-bottom: 2rem;
       overflow: hidden;
-      min-height: 700px;
+      min-height: 300px;
       max-height: 1000px;
     }
     .discussion-form-card .card-header {
@@ -84,11 +84,11 @@
       border-radius: 1rem;
       box-shadow: 0 4px 24px rgba(76,175,80,0.10);
       overflow: hidden;
-      min-height:700px;
-      max-height: 900px;
+      min-height: 500px;
+      /* max-height: 900px; */
     }
     .discussion-list-card .list-group {
-      max-height: 400px;
+      max-height: 480px;
       overflow-y: auto;
     }
     .discussion-list-card .list-group::-webkit-scrollbar {
@@ -175,6 +175,91 @@
         padding: 0.8rem 0.5rem;
       }
     }
+    .new-discussion-layout {
+      display: flex;
+      align-items: flex-start;
+      gap: 1rem;
+      padding: 1.2rem 1.2rem 1rem 1.2rem;
+      background: #fff;
+      border-radius: 0.75rem;
+      box-shadow: 0 2px 8px rgba(76,175,80,0.07);
+      margin-bottom: 1.1rem;
+      position: relative;
+    }
+    .discussion-avatar img {
+      width: 44px;
+      height: 44px;
+      border-radius: 50%;
+      object-fit: cover;
+      border: 2px solid #c8e6c9;
+    }
+    .discussion-avatar {
+      flex-shrink: 0;
+    }
+    .discussion-content {
+      flex: 1 1 auto;
+      min-width: 0;
+    }
+    .discussion-meta-top {
+      font-size: 0.97rem;
+      color: #388e3c;
+      margin-bottom: 0.1rem;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+    .discussion-username {
+      font-weight: 600;
+    }
+    .discussion-meta-text {
+      color: #888;
+      font-weight: 400;
+    }
+    .new-title {
+      font-size: 1.08rem;
+      font-weight: 700;
+      color: #256029;
+      margin-bottom: 0.2rem;
+      display: block;
+      text-decoration: none;
+    }
+    .new-title:hover {
+      color: #18804b;
+      text-decoration: underline;
+    }
+    .discussion-body-preview {
+      color: #666;
+      font-size: 0.98rem;
+      margin-bottom: 0.5rem;
+      margin-top: 0.1rem;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+    .discussion-actions {
+      display: flex;
+      align-items: center;
+      gap: 1.2rem;
+      font-size: 1.05rem;
+      color: #888;
+      margin-top: 0.2rem;
+    }
+    .action-icon {
+      display: flex;
+      align-items: center;
+      gap: 0.3rem;
+    }
+    @media (max-width: 767.98px) {
+      .new-discussion-layout {
+        flex-direction: column;
+        gap: 0.5rem;
+        padding: 0.8rem 0.5rem 0.7rem 0.5rem;
+      }
+      .discussion-avatar img {
+        width: 36px;
+        height: 36px;
+      }
+    }
   </style>
 </head>
 <body>
@@ -186,27 +271,32 @@
       <p class="mb-0">Connect, share, and grow with fellow young farmers. Start a new discussion or join the conversation!</p>
     </div>
     <div class="row justify-content-center g-4">
-      <div class="col-12 col-lg-7">
-        <div class="card discussion-form-card mb-5 mb-lg-0" data-aos="fade-up">
-          <div class="card-header">
-            <i class="bi bi-chat-dots me-2"></i>Start a New Discussion
-          </div>
-          <div class="card-body">
-            <form method="POST" action="addquestion.php">
-              <div class="mb-3">
-                  <label for="threadTitle" class="form-label">Thread Title</label>
-                  <input type="text" id="threadTitle" name="title" class="form-control" placeholder="Enter title" required>
-              </div>
-              <div class="mb-3">
-                  <label for="threadMessage" class="form-label">Message</label>
-                  <textarea id="threadMessage" name="body" class="form-control" rows="5" placeholder="Write your message here..." required></textarea>
-              </div>
-              <button type="submit" class="btn btn-success">Create Thread</button>
-            </form>
+      <div class="col-12 col-lg-8 mx-auto">
+        <!-- Start New Discussion Button -->
+        <button class="btn btn-success w-100 mb-3 py-3 fs-5 fw-bold" type="button" data-bs-toggle="collapse" data-bs-target="#newDiscussionForm" aria-expanded="false" aria-controls="newDiscussionForm">
+          <i class="bi bi-chat-dots me-2"></i>Start a New Discussion
+        </button>
+        <!-- Collapsible Form -->
+        <div class="collapse" id="newDiscussionForm">
+          <div class="card discussion-form-card mb-4" data-aos="fade-up">
+            <div class="card-header">
+              <i class="bi bi-chat-dots me-2"></i>Start a New Discussion
+            </div>
+            <div class="card-body">
+              <form method="POST" action="addquestion.php">
+                <div class="mb-3">
+                    <label for="threadTitle" class="form-label">Thread Title</label>
+                    <input type="text" id="threadTitle" name="title" class="form-control" placeholder="Enter title" required>
+                </div>
+                <div class="mb-3">
+                    <label for="threadMessage" class="form-label">Message</label>
+                    <textarea id="threadMessage" name="body" class="form-control" rows="5" placeholder="Write your message here..." required></textarea>
+                </div>
+                <button type="submit" class="btn btn-success">Create Thread</button>
+              </form>
+            </div>
           </div>
         </div>
-      </div>
-      <div class="col-12 col-lg-4">
         <div class="card discussion-list-card" data-aos="fade-up" data-aos-delay="100">
           <div class="card-header">
             <i class="bi bi-clock-history me-2"></i>Recent Discussions
@@ -214,16 +304,26 @@
           <div class="list-group list-group-flush">
             <?php if ($result->num_rows > 0): ?>
                 <?php while ($row = $result->fetch_assoc()): ?>
-                    <div class="discussion-item list-group-item">
-                        <div>
-                            <a href="thread.php?id=<?= $row['question_id'] ?>" class="discussion-title">
-                                <?= htmlspecialchars($row['title']) ?>
-                            </a>
-                            <div class="discussion-meta">
-                              <img src="<?= !empty($row['profile_picture']) ? '../../images/profile_pics/' . htmlspecialchars($row['profile_picture']) : '../../images/clearteenalogo.png' ?>" alt="User Avatar" style="width:24px;height:24px;object-fit:cover;border-radius:50%;margin-right:4px;" onerror="this.onerror=null;this.src='../../images/clearteenalogo.png'">
-                              <span><?= htmlspecialchars($row['username']) ?></span>
-                              <i class="bi bi-calendar-event ms-2"></i> <?= date('M d, Y', strtotime($row['created_at'])) ?>
-                            </div>
+                    <div class="discussion-item list-group-item new-discussion-layout">
+                        <div class="discussion-avatar">
+                          <img src="<?= !empty($row['profile_picture']) ? '../../images/profile_pics/' . htmlspecialchars($row['profile_picture']) : '../../images/clearteenalogo.png' ?>" alt="User Avatar" onerror="this.onerror=null;this.src='../../images/clearteenalogo.png'">
+                        </div>
+                        <div class="discussion-content">
+                          <div class="discussion-meta-top">
+                            <span class="discussion-username"><?= htmlspecialchars($row['username']) ?></span>
+                            <span class="discussion-meta-text">&bull; <?= date('M d, Y', strtotime($row['created_at'])) ?></span>
+                          </div>
+                          <a href="thread.php?id=<?= $row['question_id'] ?>" class="discussion-title new-title">
+                            <?= htmlspecialchars($row['title']) ?>
+                          </a>
+                          <div class="discussion-body-preview">
+                            <?= htmlspecialchars(mb_strimwidth($row['body'], 0, 100, '...')) ?>
+                          </div>
+                          <div class="discussion-actions">
+                            <span class="action-icon"><i class="bi bi-hand-thumbs-up"></i> 1</span>
+                            <span class="action-icon"><i class="bi bi-chat"></i> 1</span>
+                            <span class="action-icon"><i class="bi bi-clock"></i> <?= date('H:i', strtotime($row['created_at'])) ?></span>
+                          </div>
                         </div>
                         <?php if ($_SESSION['role'] === 'agriculturist'): ?>
                             <form method="GET" action="delete.php" onsubmit="return confirm('Are you sure you want to delete this question?');">
@@ -235,7 +335,7 @@
                     </div>
                 <?php endwhile; ?>
             <?php else: ?>
-                <div class="discussion-item list-group-item">
+                <div class="discussion-item list-group-item new-discussion-layout">
                     <p class="mb-0 text-muted">No questions yet. Start the first discussion!</p>
                 </div>
             <?php endif; ?>
