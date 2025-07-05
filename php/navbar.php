@@ -299,13 +299,15 @@ function isActiveLink($link_path, $current_path, $current_page) {
     $user_id = $_SESSION['user_id'];
     $profile_pic = '';
     $user_name = '';
-    $sql = "SELECT name, profile_picture FROM users WHERE user_id = ?";
+    $user_role = '';
+    $sql = "SELECT name, profile_picture, role FROM users WHERE user_id = ?";
     if ($stmt = $conn->prepare($sql)) {
       $stmt->bind_param("i", $user_id);
       $stmt->execute();
-      $stmt->bind_result($name, $profile_picture);
+      $stmt->bind_result($name, $profile_picture, $role);
       if ($stmt->fetch()) {
         $user_name = htmlspecialchars($name);
+        $user_role = htmlspecialchars(ucfirst($role));
         $profile_pic = !empty($profile_picture) ? $base . "images/profile_pics/" . htmlspecialchars($profile_picture) : $base . "images/clearteenalogo.png";
       } else {
         $profile_pic = $base . "images/clearteenalogo.png";
@@ -324,6 +326,9 @@ function isActiveLink($link_path, $current_path, $current_page) {
         <li class="dropdown-header text-center">
           <img src="<?php echo $profile_pic; ?>" alt="Profile" style="width: 56px; height: 56px; border-radius: 50%; object-fit: cover; border: 2px solid #4caf50; background: #fff; margin-bottom: 8px;">
           <div style="font-weight: 600;"><?php echo $user_name; ?></div>
+          <div style="font-size: 0.95em; color: #388e3c; margin-top: 2px; font-weight: 500;">
+            <?php echo $user_role; ?>
+          </div>
         </li>
         <li><hr class="dropdown-divider"></li>
         <li><a class="dropdown-item" href="<?php echo $base; ?>php/userpage.php">Profile</a></li>

@@ -218,6 +218,9 @@
                         <img src="<?php echo $profile_pic; ?>" class="avatar me-3 profile-picture" alt="User Avatar" onerror="this.onerror=null;this.src='../images/clearteenalogo.png';">
                         <div>
                             <h4 class="mb-0"><?php echo htmlspecialchars($user['name']); ?></h4>
+                            <div style="font-size: 1.05em; color: #388e3c; font-weight: 500; margin-bottom: 2px;">
+                                <?php echo htmlspecialchars(ucfirst($user['role'])); ?>
+                            </div>
                             <div class="text-muted">@<?php echo htmlspecialchars($user['username']); ?></div>
                             <button class="btn btn-outline-secondary btn-sm ms-2" data-bs-toggle="modal" data-bs-target="#uploadProfilePicModal">
                                 <i class="bi bi-upload"></i> Change Picture
