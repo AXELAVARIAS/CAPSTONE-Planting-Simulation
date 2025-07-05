@@ -9,9 +9,12 @@
   
   include "../connection.php"; 
 
-  $sql = "SELECT q.question_id, q.title, q.body, q.created_at, u.username, u.profile_picture 
+  $sql = "SELECT q.question_id, q.title, q.body, q.created_at, u.username, u.profile_picture, u.role,
+          COUNT(r.reply_id) as reply_count
           FROM questions q
           JOIN users u ON q.user_id = u.user_id
+          LEFT JOIN reply r ON q.question_id = r.question_id
+          GROUP BY q.question_id, q.title, q.body, q.created_at, u.username, u.profile_picture, u.role
           ORDER BY q.created_at DESC
           LIMIT 10";
   $result = $conn->query($sql);
@@ -215,6 +218,26 @@
       color: #888;
       font-weight: 400;
     }
+    .role-badge {
+      font-size: 0.75rem;
+      padding: 0.2rem 0.5rem;
+      border-radius: 1rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+    .role-student {
+      background: #e3f2fd;
+      color: #1976d2;
+    }
+    .role-admin {
+      background: #ffebee;
+      color: #d32f2f;
+    }
+    .role-agriculturist {
+      background: #e8f5e8;
+      color: #388e3c;
+    }
     .new-title {
       font-size: 1.08rem;
       font-weight: 700;
@@ -311,6 +334,7 @@
                         <div class="discussion-content">
                           <div class="discussion-meta-top">
                             <span class="discussion-username"><?= htmlspecialchars($row['username']) ?></span>
+                            <span class="role-badge role-<?= $row['role'] ?>"><?= ucfirst($row['role']) ?></span>
                             <span class="discussion-meta-text">&bull; <?= date('M d, Y', strtotime($row['created_at'])) ?></span>
                           </div>
                           <a href="thread.php?id=<?= $row['question_id'] ?>" class="discussion-title new-title">
@@ -321,7 +345,7 @@
                           </div>
                           <div class="discussion-actions">
                             <span class="action-icon"><i class="bi bi-hand-thumbs-up"></i> 1</span>
-                            <span class="action-icon"><i class="bi bi-chat"></i> 1</span>
+                            <span class="action-icon"><i class="bi bi-chat"></i> <?= $row['reply_count'] ?></span>
                             <span class="action-icon"><i class="bi bi-clock"></i> <?= date('H:i', strtotime($row['created_at'])) ?></span>
                           </div>
                         </div>
