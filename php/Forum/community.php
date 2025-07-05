@@ -51,10 +51,11 @@
     .community-header {
       background: linear-gradient(90deg, #43a047 0%, #66bb6a 100%);
       color: #fff;
-      border-radius: 1rem 1rem 0 0;
+      border-radius: 1rem;
       padding: 1.5rem 2rem 1rem 2rem;
       margin-bottom: 2rem;
       box-shadow: 0 4px 24px rgba(76,175,80,0.08);
+      width: 100%;
     }
     .discussion-form-card {
       border-radius: 1rem;
@@ -63,6 +64,7 @@
       overflow: hidden;
       min-height: 300px;
       max-height: 1000px;
+      width: 100%;
     }
     .discussion-form-card .card-header {
       background: #388e3c;
@@ -88,6 +90,7 @@
       box-shadow: 0 4px 24px rgba(76,175,80,0.10);
       overflow: hidden;
       min-height: 500px;
+      width: 100%;
       /* max-height: 900px; */
     }
     .discussion-list-card .list-group {
@@ -289,12 +292,12 @@
 <?php include '../navbar.php'; ?>
 <div class="main-content">
   <div class="container py-4">
-    <div class="community-header mb-4" data-aos="fade-down">
-      <h2 class="mb-1"><i class="bi bi-people-fill me-2"></i>Farming Community</h2>
-      <p class="mb-0">Connect, share, and grow with fellow young farmers. Start a new discussion or join the conversation!</p>
-    </div>
     <div class="row justify-content-center g-4">
       <div class="col-12 col-lg-8 mx-auto">
+        <div class="community-header mb-4" data-aos="fade-down">
+          <h2 class="mb-1"><i class="bi bi-people-fill me-2"></i>Farming Community</h2>
+          <p class="mb-0">Connect, share, and grow with fellow young farmers. Start a new discussion or join the conversation!</p>
+        </div>
         <!-- Start New Discussion Button -->
         <button class="btn btn-success w-100 mb-3 py-3 fs-5 fw-bold" type="button" data-bs-toggle="collapse" data-bs-target="#newDiscussionForm" aria-expanded="false" aria-controls="newDiscussionForm">
           <i class="bi bi-chat-dots me-2"></i>Start a New Discussion
