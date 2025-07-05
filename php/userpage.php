@@ -24,8 +24,9 @@
     $question_sql = "SELECT * FROM questions WHERE user_id = {$_SESSION['user_id']} ORDER BY created_at DESC";
     $question_result = $conn->query($question_sql);
 
-    $reply_sql = "SELECT r.*, q.title FROM reply r
+    $reply_sql = "SELECT r.*, q.title, q.body AS question_body, q.created_at AS question_created_at, u.name AS author_name, u.profile_picture AS author_profile_picture FROM reply r
                   JOIN questions q ON r.question_id = q.question_id
+                  JOIN users u ON q.user_id = u.user_id
                   WHERE r.user_id = {$_SESSION['user_id']} ORDER BY r.created_at DESC";
     $reply_result = $conn->query($reply_sql);
 
@@ -235,13 +236,22 @@
                                 <div class="accordion-item">
                                     <h2 class="accordion-header" id="qheading<?php echo $qidx; ?>">
                                         <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#qcollapse<?php echo $qidx; ?>" aria-expanded="false" aria-controls="qcollapse<?php echo $qidx; ?>">
-                                            <?php echo htmlspecialchars($question['title']); ?>
+                                            <div class="d-flex align-items-center w-100">
+                                                <img src="<?php echo $profile_pic; ?>" alt="User Avatar" style="width:36px;height:36px;border-radius:50%;object-fit:cover;margin-right:12px;" onerror="this.onerror=null;this.src='../images/clearteenalogo.png';">
+                                                <div>
+                                                    <span class="fw-semibold text-success"><?php echo htmlspecialchars($user['name']); ?></span><br>
+                                                    <span class="text-muted" style="font-size:0.95em;">Title: <?php echo htmlspecialchars($question['title']); ?></span>
+                                                </div>
+                                            </div>
                                         </button>
                                     </h2>
                                     <div id="qcollapse<?php echo $qidx; ?>" class="accordion-collapse collapse" aria-labelledby="qheading<?php echo $qidx; ?>" data-bs-parent="#questionsAccordion">
                                         <div class="accordion-body">
-                                            <p><?php echo htmlspecialchars($question['body']); ?></p>
-                                            <small class="text-muted">Asked on: <?php echo $question['created_at']; ?></small>
+                                            <div class="mb-3 p-3 rounded bg-light border">
+                                                <div class="fw-semibold mb-1">Question:</div>
+                                                <div class="mb-1"><?php echo htmlspecialchars($question['body']); ?></div>
+                                                <small class="text-muted">Asked on: <?php echo $question['created_at']; ?></small>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
@@ -252,23 +262,59 @@
                     <?php endif; ?>
                     <hr>
                     <h5 class="mb-3">Your Replies in the Farming Community</h5>
-                    <?php if ($reply_result->num_rows > 0): ?>
+                    <?php
+                    // Group replies by question
+                    $grouped_replies = [];
+                    if ($reply_result->num_rows > 0) {
+                        while ($reply = $reply_result->fetch_assoc()) {
+                            $qid = $reply['question_id'];
+                            if (!isset($grouped_replies[$qid])) {
+                                $grouped_replies[$qid] = [
+                                    'title' => $reply['title'],
+                                    'question_body' => $reply['question_body'],
+                                    'question_created_at' => $reply['question_created_at'],
+                                    'author_name' => $reply['author_name'],
+                                    'author_profile_picture' => $reply['author_profile_picture'],
+                                    'replies' => []
+                                ];
+                            }
+                            $grouped_replies[$qid]['replies'][] = $reply;
+                        }
+                    }
+                    ?>
+                    <?php if (!empty($grouped_replies)): ?>
                         <div class="accordion" id="repliesAccordion">
-                            <?php $ridx = 0; while ($reply = $reply_result->fetch_assoc()): ?>
+                            <?php $ridx = 0; foreach ($grouped_replies as $qid => $qdata): ?>
                                 <div class="accordion-item">
                                     <h2 class="accordion-header" id="rheading<?php echo $ridx; ?>">
                                         <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#rcollapse<?php echo $ridx; ?>" aria-expanded="false" aria-controls="rcollapse<?php echo $ridx; ?>">
-                                            In: <?php echo htmlspecialchars($reply['title']); ?>
+                                            <div class="d-flex align-items-center w-100">
+                                                <img src="<?php echo !empty($qdata['author_profile_picture']) ? '../images/profile_pics/' . htmlspecialchars($qdata['author_profile_picture']) : '../images/clearteenalogo.png'; ?>" alt="Author Avatar" style="width:36px;height:36px;border-radius:50%;object-fit:cover;margin-right:12px;" onerror="this.onerror=null;this.src='../images/clearteenalogo.png';">
+                                                <div>
+                                                    <span class="fw-semibold text-success"><?php echo htmlspecialchars($qdata['author_name']); ?></span><br>
+                                                    <span class="text-muted" style="font-size:0.95em;">In: <?php echo htmlspecialchars($qdata['title']); ?></span>
+                                                </div>
+                                            </div>
                                         </button>
                                     </h2>
                                     <div id="rcollapse<?php echo $ridx; ?>" class="accordion-collapse collapse" aria-labelledby="rheading<?php echo $ridx; ?>" data-bs-parent="#repliesAccordion">
                                         <div class="accordion-body">
-                                            <p><?php echo htmlspecialchars($reply['body']); ?></p>
-                                            <small class="text-muted">Replied on: <?php echo $reply['created_at']; ?></small>
+                                            <div class="mb-3 p-3 rounded bg-light border">
+                                                <div class="fw-semibold mb-1">Question:</div>
+                                                <div class="mb-1"><?php echo htmlspecialchars($qdata['question_body']); ?></div>
+                                                <small class="text-muted">Posted on: <?php echo $qdata['question_created_at']; ?></small>
+                                            </div>
+                                            <div class="fw-semibold mb-2">Your Replies:</div>
+                                            <?php foreach ($qdata['replies'] as $reply): ?>
+                                                <div class="mb-3 p-2 border-start border-success border-3 bg-white rounded">
+                                                    <p class="mb-1"><?php echo htmlspecialchars($reply['body']); ?></p>
+                                                    <small class="text-muted">Replied on: <?php echo $reply['created_at']; ?></small>
+                                                </div>
+                                            <?php endforeach; ?>
                                         </div>
                                     </div>
                                 </div>
-                            <?php $ridx++; endwhile; ?>
+                            <?php $ridx++; endforeach; ?>
                         </div>
                     <?php else: ?>
                         <p>No replies found.</p>
